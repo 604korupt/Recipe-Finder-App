@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --blue_gray_800: #253d4e;
+        --blue_gray_900_0c: #3232470c;
+        --deep_orange_700: #dc582a;
+        --gray_500: #a1a1a1;
+        --gray_900: #252525;
+        --gray_900_01: #181a20;
+        --light_green_800: #509e2f;
+        --light_green_a700: #84bd00;
+        --white_a700: #ffffff;
+
+        --shadow-xs: 0 3px 8px -1px #3232470c;
+
+        --radius-xs: 3px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-1g: 16px;
+
+        --space-xs: 6px;
+        --space-sm: 8px;
+        --space-md: 12px;
+        --space-1g: 14px;
+        --space-x1: 20px;
+        --space-2x1: 32px;
+        --space-3x1: 40px;
+    }
+}
+
+@layer components {
+    .container-xs {
+        @apply w-full mx-auto max-w-[1264px];
+    }
+}

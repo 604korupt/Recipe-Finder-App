@@ -1,0 +1,71 @@
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/PlusJakartaSansRomanBold.ttf");
+    font-family: "Plus Jakarta Sans";
+    font-weight: 700;
+}
+
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/UrbanistBold.ttf");
+    font-family: "Urbanist";
+    font-weight: 700;
+}
+
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/UrbanistMedium.ttf");
+    font-family: "Urbanist";
+    font-weight: 500;
+}
+
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/InterBold.ttf");
+    font-family: "Inter";
+    font-weight: 700;
+}
+
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/PoppinsMedium.ttf");
+    font-family: "Poppins";
+    font-weight: 500;
+}
+    
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/InterMedium.ttf");
+    font-family: "Inter";
+    font-weight: 500;
+}
+    
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/InterSemiBold.ttf");
+    font-family: "Inter";
+    font-weight: 600;
+}
+    
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/PoppinsSemiBold.ttf");
+    font-family: "Poppins";
+    font-weight: 600;
+}
+
+@font-face {
+    font-display: swap;
+    font-style: normal;
+    src: url("/public/fonts/InterRegular.ttf");
+    font-family: "Inter";
+    font-weight: 400;
+}
