@@ -12,13 +12,17 @@ export interface Recipe {
 }
 
 export const spoonacularApi = {
+  // search recipes by query
   searchRecipes: async (query: string) => {
     const response = await fetch(
       `${BASE_URL}/recipes/complexSearch?apiKey=${API_KEY}&query=${query}&addRecipeInformation=true`
     );
-    return response.json();
+    const data = await response.json();
+    console.log("search response:", data);
+    return data.results;
   },
 
+  // get recipe by id
   getRecipeById: async (id: number) => {
     const response = await fetch(
       `${BASE_URL}/recipes/informationBulk?apiKey=${API_KEY}&ids=${id}`
@@ -26,6 +30,7 @@ export const spoonacularApi = {
     return response.json();
   },
 
+  // TODO: may not need this, but will keep it for now
   getRandomRecipes: async () => {
     const response = await fetch(
       `${BASE_URL}/recipes/random?apiKey=${API_KEY}&number=8`

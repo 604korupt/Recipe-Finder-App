@@ -1,12 +1,13 @@
 import { Heading } from "../../components";
 
-export default function RecipeFinderSection() {
+// Update the component definition
+const RecipeFinderSection: React.FC = () => {
     return (
         <>
             {/* recipe finder section */}
             <div className="self-stretch">
                 <div className="flex justify-center bg-light_green-a700 py-[26px] sm:py-5">
-                    <div className="container-xs mt-2 flex px-3.5 md:px-5">
+                    <div className="container-xs mt-2 flex flex-col px-3.5 md:px-5">
                         <Heading
                             size="headingmd"
                             as="h1"
@@ -20,4 +21,6 @@ export default function RecipeFinderSection() {
             </div>
         </>
     );
-}
+};
+
+export default RecipeFinderSection;

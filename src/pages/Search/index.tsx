@@ -3,9 +3,11 @@ import { Button, Heading, Img } from "../../components";
 import DairyFreeRecipeCard from "../../components/DiaryFreeRecipeCard";
 import DietaryPreferences from "../../components/DietaryPreferences";
 import RecipeFinderSection from "./RecipeFinderSection";
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
+import { spoonacularApi } from "../../components/services/spoonacularApi";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const searchResultsGrid = [
+/*const searchResultsGrid = [
     {
         recipeImage: "images/img_image_rounded_200x288.png",
         dietaryLabel: "Dairy Free",
@@ -42,9 +44,57 @@ const searchResultsGrid = [
         recipeTitle: "Fried Rice",
         cookingTime: "40 min",
     },
-];
+]; */
+
+interface Recipe {
+    id: number;
+    title: string;
+    image: string;
+}
 
 export default function SearchPage() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
+    const [searchResults, setSearchResults] = useState<Recipe[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    
+    useEffect(() => {
+        // Only perform search if there's a query
+        const query = searchParams.get('q');
+        if (query) {
+            performSearch(query);
+        }
+    }, [searchParams]);
+
+    const performSearch = async (query: string) => {
+        try {
+            const results = await spoonacularApi.searchRecipes(query);
+            console.log("api response:", results);
+            setSearchResults(results);
+        } catch (error) {
+            console.error('Error searching recipes:', error);
+        }
+    };
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            const response = await spoonacularApi.searchRecipes(searchTerm);
+            console.log("api response:", response);
+            // Ensure we're getting an array of results
+            const results = Array.isArray(response) ? response : [];
+            console.log('Search Results:', results); // Debug log
+            setSearchResults(results);
+        } catch (error) {
+            console.error('Error searching recipes:', error);
+            setSearchResults([]); // Reset to empty array on error
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <>
             <Helmet>
@@ -56,24 +106,28 @@ export default function SearchPage() {
                     {/* Recipe Finder Section */}
                     <RecipeFinderSection />
                     <div className="container-xs flex flex-col gap-[34px] md:px-5">
-                        <div className="ml-3.5 mr-2 flex items-start justify-between gap-5 md:mx-0">
-                            <Heading
-                                size="headinglg"
-                                as="h2"
-                                className="mt-1 self-end text-[64px] font-bold text-gray-900 md:text-[48px]"
-                            >
-                                Search Recipes
-                            </Heading>
-                            <a href="https://www.youtube.com/embed/bv8Fxk0sz7I" target="_blank" rel="noopener noreferrer">
-                                <Button
-                                    shape="round"
-                                    rightIcon={<Img src="images/img_arrowright.svg" alt="Arrow Right" className="h-[26px] w-[26px]" />}
-                                    className="min-w-[124px] gap-3.5 rounded-[10px] pl-3 pr-[22px] sm:pr-5"
+                        <div className="ml-3.5 mr-2 flex items-center justify-between gap-5 md:mx-0">
+                            <div className="flex items-center gap-5 flex-1">
+                                <Heading
+                                    size="headinglg"
+                                    as="h2"
+                                    className="text-[64px] font-bold text-gray-900 md:text-[48px]"
                                 >
-                                    Home
-                                </Button>
-                            </a>
+                                    Search Recipes
+                                </Heading>
+                                <form onSubmit={handleSearch} className="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="w-full rounded-lg border border-gray-300 px-4 py-2"
+                                        placeholder="Search recipes..."
+                                    />
+                                </form>
+                            </div>
                         </div>
+
+                        {/* Filters and Search Results */}
                         <div className="flex items-start gap-9 md:flex-col">
                             <div className="w-[22%] self-center md:w-full">
                                 <div className="bg-white-a700">
@@ -88,18 +142,33 @@ export default function SearchPage() {
                                     </div>
                                     <div className="mb-[282px] mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
                                         <DietaryPreferences />
+                                        {/* TODO: may add another parameter, but may not */}
                                         <DietaryPreferences />
                                     </div>
                                 </div>
                             </div>
+                            {/* TODO: it works now, but only a certain way, need to debug */}
+                            {/* Search Results Section */}
                             <div className="flex flex-1 flex-col items-start gap-[66px] md:self-stretch sm:gap-[33px]">
                                 <div className="grid grid-cols-3 gap-3.5 self-stretch md:grid-cols-2 sm:grid-cols-1">
-                                    <Suspense fallback={<div>Loading feed ...</div>}>
-                                        {searchResultsGrid.map((d, index) => (
-                                            <DairyFreeRecipeCard {...d} key={"productsGrid" + index} />
-                                        ))}
-                                    </Suspense>
+                                    {isLoading ? (
+                                        <div>Loading...</div>
+                                    ) : (
+                                        searchResults.length > 0 ? (
+                                            searchResults.map((recipe) => (
+                                                <DairyFreeRecipeCard
+                                                    key={recipe.id}
+                                                    id={recipe.id}
+                                                    title={recipe.title}
+                                                    image={recipe.image}
+                                                />
+                                            ))
+                                        ) : (
+                                            <div>No recipes found</div>
+                                        )
+                                    )}
                                 </div>
+                                {/* Load More Button */}
                                 <Button
                                     color="light_green_800"
                                     size="xs"
