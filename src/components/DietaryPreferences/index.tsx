@@ -8,6 +8,8 @@ interface Props {
 }
 
 export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "See more", ...props }: Props) {
+    const [showMore, setShowMore] = React.useState(false);
+
     return (
         <div
             {...props}
@@ -48,9 +50,28 @@ export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "S
                         id="PaleoOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                     />
-                    <a href="#">
+                    {showMore && (
+                        <>
+                            <CheckBox
+                                name="LowFODMAP Option"
+                                label="Low FODMAP"
+                                id="LowFODMAPOption"
+                                className="gap-3 text-[14px] text-blue_gray-800"
+                            />
+                            <CheckBox
+                                name="Whole30 Option"
+                                label="Whole30"
+                                id="Whole30Option"
+                                className="gap-3 text-[14px] text-blue_gray-800"
+                            />
+                        </>
+                    )}
+                    <a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        setShowMore(!showMore);
+                    }}>
                         <Text as="p" className="text-[12px] font-normal text-light_green-800">
-                            {seeMoreLink}
+                            {showMore ? "See less" : seeMoreLink}
                         </Text>
                     </a>
                 </div>

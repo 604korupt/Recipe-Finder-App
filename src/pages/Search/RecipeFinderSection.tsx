@@ -19,13 +19,13 @@ const RecipeFinderSection: React.FC = () => {
                         <div className="flex gap-4">
                             <Link 
                                 to="/"
-                                className="px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
                             >
                                 Home
                             </Link>
                             <Link 
                                 to="/search"
-                                className="px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
                             >
                                 Search
                             </Link>
