@@ -22,7 +22,8 @@ export const spoonacularApi = {
         params: {
           apiKey: API_KEY,
           query,
-          addRecipeInformation: true
+          addRecipeInformation: true,
+          number: 99
         }
       }
     );

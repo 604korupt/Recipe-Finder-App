@@ -58,6 +58,7 @@ export default function SearchPage() {
     const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
     const [searchResults, setSearchResults] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [displayCount, setDisplayCount] = useState(6);
     
     useEffect(() => {
         // Only perform search if there's a query
@@ -93,6 +94,10 @@ export default function SearchPage() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleLoadMore = () => {
+        setDisplayCount(prev => prev + 6);
     };
 
     return (
@@ -151,7 +156,7 @@ export default function SearchPage() {
                                         <div>Loading...</div>
                                     ) : (
                                         searchResults.length > 0 ? (
-                                            searchResults.map((recipe) => (
+                                            searchResults.slice(0, displayCount).map((recipe) => (
                                                 <DairyFreeRecipeCard
                                                     key={recipe.id}
                                                     id={recipe.id}
@@ -164,14 +169,15 @@ export default function SearchPage() {
                                         )
                                     )}
                                 </div>
-                                <Button
-                                    color="light_green_800"
-                                    size="xs"
-                                    shape="round"
-                                    className="ml-[104px] min-w-[400px] rounded-[10px] px-[34px] md:ml-0 sm:px-5"
-                                >
-                                    Load More
-                                </Button>
+                                {searchResults.length > 6 && displayCount < searchResults.length && (
+                                    <Button
+                                        shape="round"
+                                        className="min-w-[124px] gap-3.5 rounded-[10px] px-3 mt-5 bg-light_green-a700 text-white hover:bg-light_green-a700 self-center"
+                                        onClick={handleLoadMore}
+                                    >
+                                        Load More
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     </div>
