@@ -98,7 +98,7 @@ export default function SearchPage() {
     return (
         <>
             <Helmet>
-                <title>Recipe Finder</title>
+                <title>Search Recipe</title>
                 <meta name="description" content="Find your favorite recipes" />
             </Helmet>
             <div className="w-full bg-white-a700">
@@ -129,7 +129,7 @@ export default function SearchPage() {
 
                         {/* Filters and Search Results */}
                         <div className="flex items-start gap-9 md:flex-col">
-                            <div className="w-[22%] self-center md:w-full">
+                            <div className="w-[22%] md:w-full">
                                 <div className="bg-white-a700">
                                     <div className="flex rounded-md bg-white-a700 px-3.5 py-2">
                                         <Heading
@@ -140,16 +140,14 @@ export default function SearchPage() {
                                             Filters
                                         </Heading>
                                     </div>
-                                    <div className="mb-[282px] mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
+                                    <div className="mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
                                         <DietaryPreferences />
                                         {/* TODO: may add another parameter, but may not */}
-                                        <DietaryPreferences />
+                                        {/*<DietaryPreferences />*/}
                                     </div>
                                 </div>
                             </div>
-                            {/* TODO: it works now, but only a certain way, need to debug */}
-                            {/* Search Results Section */}
-                            <div className="flex flex-1 flex-col items-start gap-[66px] md:self-stretch sm:gap-[33px]">
+                            <div className="flex flex-1 flex-col items-start gap-[66px] md:ml-0 md:self-stretch sm:gap-[33px]">
                                 <div className="grid grid-cols-3 gap-3.5 self-stretch md:grid-cols-2 sm:grid-cols-1">
                                     {isLoading ? (
                                         <div>Loading...</div>
@@ -168,7 +166,6 @@ export default function SearchPage() {
                                         )
                                     )}
                                 </div>
-                                {/* Load More Button */}
                                 <Button
                                     color="light_green_800"
                                     size="xs"
