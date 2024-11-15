@@ -5,10 +5,20 @@ interface Props {
     className?: string;
     dietText?: React.ReactNode;
     seeMoreLink?: React.ReactNode;
+    onDietsChange?: (diets: string[]) => void;
 }
 
-export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "See more", ...props }: Props) {
+export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "See more", onDietsChange, ...props }: Props) {
     const [showMore, setShowMore] = React.useState(false);
+    const [selectedDiets, setSelectedDiets] = React.useState<string[]>([]);
+
+    const handleDietChange = (diet: string, checked: boolean) => {
+        const newDiets = checked 
+            ? [...selectedDiets, diet]
+            : selectedDiets.filter(d => d !== diet);
+        setSelectedDiets(newDiets);
+        onDietsChange?.(newDiets);
+    };
 
     return (
         <div
@@ -25,30 +35,35 @@ export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "S
                         label="Gluten Free"
                         id="GlutenFreeOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
+                        onChange={(checked) => handleDietChange('gluten free', checked)}
                     />
                     <CheckBox
                         name="Ketogenic Option"
                         label="Ketogenic"
                         id="KetogenicOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
+                        onChange={(checked) => handleDietChange('ketogenic', checked)}
                     />
                     <CheckBox
                         name="Vegetarian Option"
                         label="Vegetarian"
                         id="VegetarianOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
+                        onChange={(checked) => handleDietChange('vegetarian', checked)}
                     />
                     <CheckBox
                         name="Vegan Option"
                         label="Vegan"
                         id="VeganOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
+                        onChange={(checked) => handleDietChange('vegan', checked)}
                     />
                     <CheckBox
                         name="Paleo Option"
                         label="Paleo"
                         id="PaleoOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
+                        onChange={(checked) => handleDietChange('paleo', checked)}
                     />
                     {showMore && (
                         <>
@@ -57,12 +72,14 @@ export default function DietaryPreferences({ dietText = "Diet", seeMoreLink = "S
                                 label="Low FODMAP"
                                 id="LowFODMAPOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
+                                onChange={(checked) => handleDietChange('fodmap-friendly', checked)}
                             />
                             <CheckBox
                                 name="Whole30 Option"
                                 label="Whole30"
                                 id="Whole30Option"
                                 className="gap-3 text-[14px] text-blue_gray-800"
+                                onChange={(checked) => handleDietChange('whole30', checked)}
                             />
                         </>
                     )}

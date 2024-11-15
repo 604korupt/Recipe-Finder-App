@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet";
-import { Button, Heading, Img } from "../../components";
+import { Button, Heading } from "../../components";
 import DairyFreeRecipeCard from "../../components/DiaryFreeRecipeCard";
 import DietaryPreferences from "../../components/DietaryPreferences";
 import RecipeFinderSection from "./RecipeFinderSection";
-import React, { Suspense, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -20,6 +20,7 @@ export default function SearchPage() {
     const [searchResults, setSearchResults] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [displayCount, setDisplayCount] = useState(6);
+    const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
     
     useEffect(() => {
         // Only perform search if there's a query
@@ -29,9 +30,15 @@ export default function SearchPage() {
         }
     }, [searchParams]);
 
+    useEffect(() => {
+        if (searchTerm) {
+            performSearch(searchTerm);
+        }
+    }, [selectedDiets]);
+
     const performSearch = async (query: string) => {
         try {
-            const results = await spoonacularApi.searchRecipes(query);
+            const results = await spoonacularApi.searchRecipes(query, selectedDiets);
             console.log("api response:", results);
             setSearchResults(results);
         } catch (error) {
@@ -107,7 +114,11 @@ export default function SearchPage() {
                                         </Heading>
                                     </div>
                                     <div className="mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
-                                        <DietaryPreferences />
+                                        <DietaryPreferences 
+                                            onDietsChange={(diets) => {
+                                                setSelectedDiets(diets);
+                                            }} 
+                                        />
                                     </div>
                                 </div>
                             </div>

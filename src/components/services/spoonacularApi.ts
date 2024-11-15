@@ -15,7 +15,7 @@ export interface Recipe {
 
 export const spoonacularApi = {
   // search recipes by query
-  searchRecipes: async (query: string) => {
+  searchRecipes: async (query: string, diets: string[] = []) => {
     const { data } = await axios.get(
       `${BASE_URL}/recipes/complexSearch`,
       {
@@ -23,7 +23,8 @@ export const spoonacularApi = {
           apiKey: API_KEY,
           query,
           addRecipeInformation: true,
-          number: 99
+          number: 99,
+          diet: diets.join(',')
         }
       }
     );
