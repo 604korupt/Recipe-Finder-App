@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_KEY = '43a00d1f1dc54aa59aa3f4cfaf04f9fd';
+const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY;
 const BASE_URL = 'https://api.spoonacular.com';
 
 export interface Recipe {
@@ -35,14 +35,14 @@ export const spoonacularApi = {
   // get recipe by id
   getRecipeById: async (id: number) => {
     const { data } = await axios.get(
-      `${BASE_URL}/recipes/informationBulk`,
+      `${BASE_URL}/recipes/${id}/information`,
       {
         params: {
-          apiKey: API_KEY,
-          ids: id
+          apiKey: API_KEY
         }
       }
     );
+    // just return the data, since there some things needed
     return data;
   },
 
