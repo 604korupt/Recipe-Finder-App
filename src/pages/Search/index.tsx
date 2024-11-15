@@ -7,45 +7,6 @@ import React, { Suspense, useState, useEffect } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-/*const searchResultsGrid = [
-    {
-        recipeImage: "images/img_image_rounded_200x288.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-    {
-        recipeImage: "images/img_image_rounded_1.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-    {
-        recipeImage: "images/img_image_rounded_2.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-    {
-        recipeImage: "images/img_image_rounded_200x288.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-    {
-        recipeImage: "images/img_image_rounded_1.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-    {
-        recipeImage: "images/img_image_rounded_2.png",
-        dietaryLabel: "Dairy Free",
-        recipeTitle: "Fried Rice",
-        cookingTime: "40 min",
-    },
-]; */
-
 interface Recipe {
     id: number;
     title: string;
@@ -134,7 +95,7 @@ export default function SearchPage() {
 
                         {/* Filters and Search Results */}
                         <div className="flex items-start gap-9 md:flex-col">
-                            {/*<div className="w-[22%] md:w-full">
+                            <div className="w-[22%] md:w-full">
                                 <div className="bg-white-a700">
                                     <div className="flex rounded-md bg-white-a700 px-3.5 py-2">
                                         <Heading
@@ -149,7 +110,7 @@ export default function SearchPage() {
                                         <DietaryPreferences />
                                     </div>
                                 </div>
-                            </div>*/}
+                            </div>
                             <div className="flex flex-1 flex-col items-start gap-[66px] md:ml-0 md:self-stretch sm:gap-[33px]">
                                 <div className="grid grid-cols-3 gap-3.5 self-stretch md:grid-cols-2 sm:grid-cols-1">
                                     {isLoading ? (
