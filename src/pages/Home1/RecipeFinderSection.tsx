@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const RecipeFinderSection: React.FC = () => {
     return (
         <>
-            <div className="self-stretch">
-                <div className="flex justify-center bg-light_green-a700 py-[26px] sm:py-5">
+            <div className="fixed top-0 left-0 right-0 w-full bg-light_green-a700 z-50">
+                <div className="flex justify-center py-[26px] sm:py-5">
                     <div className="container-xs mt-2 flex flex-row items-center justify-between px-3.5 md:px-5">
                         <Heading
                             size="headingmd"
@@ -33,6 +33,7 @@ const RecipeFinderSection: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <div className="h-[120px]"></div>
         </>
     );
 };
