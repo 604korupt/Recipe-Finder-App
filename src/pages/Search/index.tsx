@@ -96,6 +96,12 @@ export default function SearchPage() {
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2"
                                         placeholder="Search recipes..."
                                     />
+                                    <Button
+                                        type="submit"
+                                        className="px-4 h-12 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                                    >
+                                        Search
+                                    </Button>
                                 </form>
                             </div>
                         </div>
