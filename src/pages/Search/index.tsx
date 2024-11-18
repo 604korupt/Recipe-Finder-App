@@ -5,7 +5,7 @@ import DietaryPreferences from "../../components/DietaryPreferences";
 import RecipeFinderSection from "./RecipeFinderSection";
 import React, { useState, useEffect } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 interface Recipe {
     id: number;
@@ -14,7 +14,6 @@ interface Recipe {
 }
 
 export default function SearchPage() {
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
     const [searchResults, setSearchResults] = useState<Recipe[]>([]);
@@ -98,7 +97,7 @@ export default function SearchPage() {
                                     />
                                     <Button
                                         type="submit"
-                                        className="px-4 h-10 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                                        className="!w-24 !h-10 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                     >
                                         Search
                                     </Button>
