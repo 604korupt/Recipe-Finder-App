@@ -9,7 +9,7 @@ const ProjectRoutes = () => {
         { path: "*", element: <NotFound /> },
         { path: "/", element: <Home1 /> },
         { path: "search", element: <Search />},
-        { path: "details", element: <Details /> },
+        { path: "details/:id", element: <Details /> },
     ]);
 
     return element;

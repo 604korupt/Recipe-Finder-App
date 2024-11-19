@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface DairyFreeRecipeCardProps {
     id: number;
@@ -55,6 +56,9 @@ const DairyFreeRecipeCard: React.FC<DairyFreeRecipeCardProps> = ({
             >
                 {isSaving ? 'Saving...' : 'Save Recipe'}
             </button>
+            <Link to={`/details/${id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                Details
+            </Link>
         </div>
     );
 };
