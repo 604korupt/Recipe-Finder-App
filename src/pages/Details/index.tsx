@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import RecipeFinderSection from "../Details/RecipeFinderSection";
+import RecipeFinderSection from "./RecipeFinderSection";
 import RecipeDetailSection from "./RecipeDetailSection";
 
 export default function DetailsPage() {
