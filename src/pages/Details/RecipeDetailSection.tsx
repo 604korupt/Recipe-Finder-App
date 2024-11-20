@@ -29,6 +29,7 @@ export default function RecipeDetailSection() {
                     {recipe ? (
                         <div>
                             <h2 className="text-xl font-semibold">{recipe.title}</h2>
+                            <br />
                             {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
                             <h3 className="text-lg font-semibold">Ingredients:</h3>
                             <ul className="list-disc pl-5">
