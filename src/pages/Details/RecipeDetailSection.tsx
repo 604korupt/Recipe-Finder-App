@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
-import { Img, Button, Heading } from "../../components";
+import { Img, Heading } from "../../components";
 
 export default function RecipeDetailSection() {
     const { id } = useParams<{ id: string }>();
@@ -20,7 +20,7 @@ export default function RecipeDetailSection() {
     return (
         <>
             <div className="mb-1 flex flex-col items-center">
-                <div className="container-xs flex flex-col items-end gap-12 md:px-5">
+                <div className="container-xs flex flex-col items-left gap-12 md:px-5">
                     <div className="flex items-center justify-between gap-5 self-stretch px-2">
                         <Heading size="headinglg" as="h2" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
                             Recipe Detail
@@ -38,7 +38,7 @@ export default function RecipeDetailSection() {
                             </ul>
                         </div>
                     ) : (
-                        <div>Loading...</div>
+                        <div className="text-center">Loading...</div>
                     )}
                 </div>
             </div>
