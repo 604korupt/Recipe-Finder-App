@@ -1,6 +1,5 @@
 import { Button } from "../../components";
 import RecipeList from "../../components/RecipeList";
-import React from "react";
 
 export default function RecipeGallerySection() {
     return (
