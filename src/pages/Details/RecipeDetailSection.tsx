@@ -37,6 +37,12 @@ export default function RecipeDetailSection() {
                                     <li key={ingredient.id}>{ingredient.original}</li>
                                 ))}
                             </ul>
+                            <h3 className="text-lg font-semibold">Instructions:</h3>
+                            <ul className="list-decimal pl-5">
+                                {recipe.analyzedInstructions[0].steps.map((step: any) => (
+                                    <li key={step.number}>{step.step}</li>
+                                ))}
+                            </ul>
                         </div>
                     ) : (
                         <div className="text-center">Loading...</div>
