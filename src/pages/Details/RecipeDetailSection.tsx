@@ -30,13 +30,17 @@ export default function RecipeDetailSection() {
                         <div>
                             <h2 className="text-xl font-semibold">{recipe.title}</h2>
                             <br />
-                            {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
-                            <h3 className="text-lg font-semibold">Ingredients:</h3>
-                            <ul className="list-disc pl-5">
-                                {recipe.extendedIngredients.map((ingredient: any) => (
-                                    <li key={ingredient.id}>{ingredient.original}</li>
-                                ))}
-                            </ul>
+                            <div className="flex">
+                                {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
+                                <div className="ml-4">
+                                    <h3 className="text-lg font-semibold">Ingredients:</h3>
+                                    <ul className="list-disc pl-5">
+                                        {recipe.extendedIngredients.map((ingredient: any) => (
+                                            <li key={ingredient.id}>{ingredient.original}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
                             <h3 className="text-lg font-semibold">Instructions:</h3>
                             <ul className="list-decimal pl-5">
                                 {recipe.analyzedInstructions[0].steps.map((step: any) => (
