@@ -6,6 +6,7 @@ import RecipeFinderSection from "./RecipeFinderSection";
 import React, { useState, useEffect } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { useSearchParams } from 'react-router-dom';
+import Allergies from "../../components/Allergies";
 
 interface Recipe {
     id: number;
@@ -20,6 +21,7 @@ export default function SearchPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [displayCount, setDisplayCount] = useState(6);
     const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
+    const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     
     useEffect(() => {
         // Only perform search if there's a query
@@ -35,9 +37,15 @@ export default function SearchPage() {
         }
     }, [selectedDiets]);
 
+    useEffect(() => {
+        if (searchTerm) {
+            performSearch(searchTerm);
+        }
+    }, [selectedAllergies]);
+
     const performSearch = async (query: string) => {
         try {
-            const results = await spoonacularApi.searchRecipes(query, selectedDiets);
+            const results = await spoonacularApi.searchRecipes(query, selectedDiets, selectedAllergies);
             console.log("api response:", results);
             setSearchResults(results);
         } catch (error) {
@@ -119,10 +127,17 @@ export default function SearchPage() {
                                         </Heading>
                                     </div>
                                     <div className="mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
+                                        {/* Dietary Preferences */}
                                         <DietaryPreferences 
                                             onDietsChange={(diets) => {
                                                 setSelectedDiets(diets);
                                             }} 
+                                        />
+                                        {/* Allergies */}
+                                        <Allergies
+                                            onAllergiesChange={(allergies) => {
+                                                setSelectedAllergies(allergies);
+                                            }}
                                         />
                                     </div>
                                 </div>
