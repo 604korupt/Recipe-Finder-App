@@ -72,17 +72,11 @@ export default function RecipeList({
                             className="h-[200px] rounded-[16px] object-cover"
                         />
                         <div className="mb-4 ml-3 mr-2.5 flex flex-col items-start md:mx-0">
-                            <Heading size="textxs" as="p" className="relative z-[1] text-[10px] font-medium text-gray-500">
-                                {recipe.category}
-                            </Heading>
                             <div className="relative mt-[-2px] self-stretch">
                                 <div>
                                     <div className="flex flex-col items-start gap-1.5">
                                         <Heading as="h5" className="text-[20px] font-bold text-gray-900">
                                             {recipe.title}
-                                        </Heading>
-                                        <Heading as="h5" className="text-[20px] font-semibold text-deep_orange-700">
-                                            {recipe.cookingTime}
                                         </Heading>
                                     </div>
                                 </div>
