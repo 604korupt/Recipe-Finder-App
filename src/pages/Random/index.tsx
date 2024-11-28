@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
 import RecipeFinderSection from "./RecipeFinderSection";
+import RecipeDetailSection from "./RecipeDetailSection";
 
 export default function DetailsPage() {
     return (
@@ -12,7 +13,8 @@ export default function DetailsPage() {
                 {/* recipe finder section */}
                 <RecipeFinderSection />
 
-                
+                {/* recipe detail section */}
+                <RecipeDetailSection />
             </div>
         </>
     );

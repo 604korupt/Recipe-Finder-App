@@ -47,17 +47,16 @@ export const spoonacularApi = {
     return data;
   },
 
-  // TODO: may not need this, but will keep it for now
-  getRandomRecipes: async () => {
+  getRandomRecipe: async () => {
     const { data } = await axios.get(
       `${BASE_URL}/recipes/random`,
       {
         params: {
           apiKey: API_KEY,
-          number: 8
+          number: 1
         }
       }
     );
-    return data;
+    return data.recipes[0];
   }
 };
