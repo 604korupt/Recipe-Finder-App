@@ -1,6 +1,5 @@
 import express from 'express';
 import { Recipe } from '../models/Recipe.js';
-import mongoose from 'mongoose';
 
 export const router = express.Router();
 

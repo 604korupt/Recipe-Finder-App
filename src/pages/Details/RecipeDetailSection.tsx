@@ -35,6 +35,16 @@ export default function RecipeDetailSection() {
                 instructions: instructions,
             };
 
+            // if the recipe is already saved, there should be no duplicates
+            const recipeExists = await fetch(`http://localhost:5000/api/recipes/${recipe.id}`, {
+                credentials: 'include'
+            });
+
+            if (recipeExists.ok) {
+                alert('Recipe already saved!');
+                return;
+            }
+
             const response = await fetch('http://localhost:5000/api/recipes', {
                 method: 'POST',
                 headers: {
