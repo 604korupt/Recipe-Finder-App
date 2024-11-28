@@ -6,4 +6,10 @@ const recipeSchema = new mongoose.Schema({
     image: String
 }, { timestamps: true });
 
+// add fields for ingredients and instructions
+recipeSchema.add({
+    ingredients: [String],
+    instructions: [String]
+});
+
 export const Recipe = mongoose.model('Recipe', recipeSchema); 
