@@ -87,7 +87,7 @@ export default function RecipeList({
             {recipes.length > 8 && currentCount < recipes.length && (
                 <Button
                     shape="round"
-                    className="min-w-[124px] gap-3.5 rounded-[10px] px-3 mt-5 bg-light_green-a700 text-white hover:bg-light_green-a700"
+                    className="min-w-[124px] gap-3.5 rounded-[10px] px-3 mt-5 bg-light_green-a700 text-white hover:bg-light_green-a700 h-10"
                     onClick={handleLoadMore}
                 >
                     Load More

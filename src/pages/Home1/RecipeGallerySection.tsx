@@ -1,4 +1,3 @@
-import { Button } from "../../components";
 import RecipeList from "../../components/RecipeList";
 
 export default function RecipeGallerySection() {
@@ -9,14 +8,6 @@ export default function RecipeGallerySection() {
                     <div className="flex flex-col gap-8 self-stretch">
                         <RecipeList />
                     </div>
-                    <Button
-                        color="light_green_800"
-                        size="xs"
-                        shape="round"
-                        className="min-w-[400px] rounded-[10px] px-[34px] sm:px-5"
-                    >
-                        Load More
-                    </Button>
                 </div>
             </div>
 }
