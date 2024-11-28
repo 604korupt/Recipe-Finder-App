@@ -1,5 +1,6 @@
 import express from 'express';
 import { Recipe } from '../models/Recipe.js';
+import mongoose from 'mongoose';
 
 export const router = express.Router();
 
@@ -10,6 +11,20 @@ router.get('/', async (req, res) => {
         res.json(recipes);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching recipes' });
+    }
+});
+
+// Get a recipe by id
+router.get('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const recipe = await Recipe.findOne({ id: id });
+        if (!recipe) {
+            return res.status(404).json({ error: 'Recipe not found' });
+        }
+        res.json(recipe);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching recipe' });
     }
 });
 

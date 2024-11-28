@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Heading, Img } from "./..";
+import { Link } from "react-router-dom";
 
 interface Recipe {
   _id: string;
+  id: string;
   category: string;
   title: string;
   cookingTime: string;
@@ -55,13 +57,6 @@ export default function RecipeList({
                 <Heading size="headinglg" as="h1" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
                     {titleText}
                 </Heading>
-                <Button
-                    shape="round"
-                    rightIcon={<Img src="images/img_arrowright.svg" alt="Arrow Right" className="h-[26px] w-[26px]" />}
-                    className="min-w-[124px] gap-3.5 rounded-[10px] px-3"
-                >
-                    {searchButtonText}
-                </Button>
             </div>
             <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">
                 {visibleRecipes.map((recipe, index) => (
@@ -74,10 +69,13 @@ export default function RecipeList({
                         <div className="mb-4 ml-3 mr-2.5 flex flex-col items-start md:mx-0">
                             <div className="relative mt-[-2px] self-stretch">
                                 <div>
-                                    <div className="flex flex-col items-start gap-1.5">
+                                    <div className="flex flex-col items-center gap-1.5">
                                         <Heading as="h5" className="text-[20px] font-bold text-gray-900">
                                             {recipe.title}
                                         </Heading>
+                                        <Link to={`/saved-recipes/${recipe.id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                            View Recipe Details
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
