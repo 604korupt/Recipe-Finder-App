@@ -164,7 +164,7 @@ export default function SearchPage() {
                                 {searchResults.length > 6 && displayCount < searchResults.length && (
                                     <Button
                                         shape="round"
-                                        className="min-w-[124px] gap-3.5 rounded-[10px] px-3 mt-5 bg-light_green-a700 text-white hover:bg-light_green-a700 self-center"
+                                        className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg self-center"
                                         onClick={handleLoadMore}
                                     >
                                         Load More
