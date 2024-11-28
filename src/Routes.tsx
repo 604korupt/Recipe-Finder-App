@@ -5,6 +5,7 @@ import Search from "./pages/Search";
 import Details from "./pages/Details";
 import SavedDetails from "./pages/SavedDetails";
 import Random from "./pages/Random";
+import Login from "./pages/Login";
 
 const ProjectRoutes = () => {
     let element = useRoutes ( [
@@ -13,7 +14,8 @@ const ProjectRoutes = () => {
         { path: "search", element: <Search />},
         { path: "details/:id", element: <Details /> },
         { path: "saved-recipes/:id", element: <SavedDetails /> },
-        { path: "random", element: <Random /> }
+        { path: "random", element: <Random /> },
+        { path: "login", element: <Login /> }
     ]);
 
     return element;
