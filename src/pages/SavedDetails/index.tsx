@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 import RecipeFinderSection from "./RecipeFinderSection";
 import RecipeDetailSection from "./RecipeDetailSection";
 
-export default function DetailsPage() {
+export default function SavedDetailsPage() {
     return (
         <>
             <Helmet>
