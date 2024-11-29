@@ -3,13 +3,9 @@ import mongoose from 'mongoose';
 const recipeSchema = new mongoose.Schema({
     id: Number,
     title: String,
-    image: String
-}, { timestamps: true });
-
-// add fields for ingredients and instructions
-recipeSchema.add({
+    image: String,
     ingredients: [String],
     instructions: [String]
-});
+}, { timestamps: true });
 
 export const Recipe = mongoose.model('Recipe', recipeSchema); 

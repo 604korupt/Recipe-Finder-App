@@ -1,7 +1,7 @@
 import express from 'express';
 import { Recipe } from '../models/Recipe.js';
 
-export const router = express.Router();
+const router = express.Router();
 
 // Get all recipes
 router.get('/', async (req, res) => {
@@ -37,3 +37,5 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Error saving recipe' });
     }
 }); 
+
+export default router;
