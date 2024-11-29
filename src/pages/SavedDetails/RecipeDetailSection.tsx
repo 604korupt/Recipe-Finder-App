@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Img, Heading } from "../../components";
+import { auth } from "../../firebaseConfig";
 
 export default function RecipeDetailSection() {
     const { id } = useParams<{ id: string }>();
@@ -9,14 +10,16 @@ export default function RecipeDetailSection() {
     useEffect(() => {
         const fetchRecipe = async () => {
             if (id) {
-                const recipeData = await fetch(`http://localhost:5000/api/recipes/${id}`);
+                const user = auth.currentUser;
+                if (!user) throw new Error('User is not authenticated.');
+                
+                const recipeData = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes/${id}`);
                 const data = await recipeData.json();
                 setRecipe(data);
             }
         };
         fetchRecipe();
     }, [id]);
-
 
     return (
         <>

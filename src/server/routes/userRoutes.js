@@ -54,7 +54,7 @@ router.get('/:firebaseUserId/recipes/:recipeId', async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        const recipe = user.recipes.id(recipeId);
+        const recipe = user.recipes.find(recipe => String(recipe.id) === String(recipeId));
         if (!recipe) {
             return res.status(404).json({ error: 'Recipe not found' });
         }
