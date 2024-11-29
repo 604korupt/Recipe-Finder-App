@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Heading, Img } from "./..";
 import { Link } from "react-router-dom";
+import { auth } from "../../firebaseConfig"; // Import Firebase auth
 
 interface Recipe {
   _id: string;
@@ -29,11 +30,14 @@ export default function RecipeList({
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                console.log('Fetching recipes...');
-                const response = await fetch('http://localhost:5000/api/recipes');
-                console.log('Response status:', response.status);
+                const user = auth.currentUser; // Get the current user
+                if (!user) {
+                    return;
+                }
+                const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
+                    credentials: 'include'
+                });
                 const data = await response.json();
-                console.log('Fetched recipes:', data);
                 setRecipes(data);
             } catch (error) {
                 console.error('Error fetching recipes:', error);
