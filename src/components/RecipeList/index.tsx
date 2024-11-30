@@ -26,25 +26,34 @@ export default function RecipeList({
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [visibleRecipes, setVisibleRecipes] = useState<Recipe[]>([]);
     const [currentCount, setCurrentCount] = useState(8);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
-        const fetchRecipes = async () => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            console.log('Current User:', user); // Log current user
+            if (!user) {
+                setRecipes([]); // Clear recipes if no user
+                setLoading(false); // Set loading to false
+                return;
+            }
             try {
-                const user = auth.currentUser; // Get the current user
-                if (!user) {
-                    return;
-                }
                 const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
                     credentials: 'include'
                 });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`); // Throw error for non-2xx responses
+                }
                 const data = await response.json();
+                console.log('Fetched Recipes:', data); // Log fetched recipes
                 setRecipes(data);
             } catch (error) {
                 console.error('Error fetching recipes:', error);
+            } finally {
+                setLoading(false); // Set loading to false after fetching
             }
-        };
+        });
 
-        fetchRecipes();
+        return () => unsubscribe(); // Cleanup subscription on unmount
     }, []);
 
     useEffect(() => {
@@ -62,40 +71,47 @@ export default function RecipeList({
                     {titleText}
                 </Heading>
             </div>
-            <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">
-                {visibleRecipes.map((recipe, index) => (
-                    <div key={recipe._id} className="flex flex-col gap-2 rounded-[16px] bg-white-a700 p-2 shadow-xs">
-                        <Img
-                            src={recipe.image || `images/img_image_rounded_${index}.png`}
-                            alt={`${recipe.title} Image`}
-                            className="h-[200px] rounded-[16px] object-cover"
-                        />
-                        <div className="mb-4 ml-3 mr-2.5 flex flex-col items-start md:mx-0">
-                            <div className="relative mt-[-2px] self-stretch">
-                                <div>
-                                    <div className="flex flex-col items-center gap-1.5">
-                                        <Heading as="h5" className="text-[20px] font-bold text-gray-900">
-                                            {recipe.title}
-                                        </Heading>
-                                        <Link to={`/saved-recipes/${recipe.id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                                            View Recipe Details
-                                        </Link>
+
+            {loading ? ( // Show loading state only while fetching
+                <div>Loading...</div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">
+                        {visibleRecipes.map((recipe, index) => (
+                            <div key={recipe._id} className="flex flex-col gap-2 rounded-[16px] bg-white-a700 p-2 shadow-xs">
+                                <Img
+                                    src={recipe.image || `images/img_image_rounded_${index}.png`}
+                                    alt={`${recipe.title} Image`}
+                                    className="h-[200px] rounded-[16px] object-cover"
+                                />
+                                <div className="mb-4 ml-3 mr-2.5 flex flex-col items-start md:mx-0">
+                                    <div className="relative mt-[-2px] self-stretch">
+                                        <div>
+                                            <div className="flex flex-col items-center gap-1.5">
+                                                <Heading as="h5" className="text-[20px] font-bold text-gray-900">
+                                                    {recipe.title}
+                                                </Heading>
+                                                <Link to={`/saved-recipes/${recipe.id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                                    View Recipe Details
+                                                </Link>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
-            </div>
 
-            {recipes.length > 8 && currentCount < recipes.length && (
-                <Button
-                    shape="round"
-                    className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
-                    onClick={handleLoadMore}
-                >
-                    Load More
-                </Button>
+                    {recipes.length > 8 && currentCount < recipes.length && (
+                        <Button
+                            shape="round"
+                            className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                            onClick={handleLoadMore}
+                        >
+                            Load More
+                        </Button>
+                    )}
+                </>
             )}
         </div>
     );
