@@ -39,6 +39,17 @@ export default function RecipeDetailSection() {
                 instructions: instructions,
             };
 
+            // if the recipe already exists in the user's recipes, don't save it again
+            const userRecipesResponse = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            const userRecipes = await userRecipesResponse.json();
+            if (userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
+                alert('Recipe already saved!');
+                return;
+            }
+
             // Post the recipe to the user's recipes endpoint
             const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
                 method: 'POST',

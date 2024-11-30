@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { Img, Heading } from "../../components";
@@ -35,6 +34,17 @@ export default function RecipeDetailSection() {
                 ingredients: ingredients,
                 instructions: instructions,
             };
+            
+            // if the recipe already exists in the user's recipes, don't save it again
+            const userRecipesResponse = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            const userRecipes = await userRecipesResponse.json();
+            if (userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
+                alert('Recipe already saved!');
+                return;
+            }
 
             // Post the recipe to the user's recipes endpoint
             const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
