@@ -1,6 +1,8 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { Img, Heading } from "../../components";
+import { auth } from "../../firebaseConfig"; // Import Firebase auth
 
 export default function RecipeDetailSection() {
     const [recipe, setRecipe] = useState<any>(null);
@@ -23,6 +25,9 @@ export default function RecipeDetailSection() {
             const ingredients = recipe.extendedIngredients.map((ingredient: any) => ingredient.original);
             const instructions = recipe.analyzedInstructions[0]?.steps.map((step: any) => step.step) || [];
             
+            const user = auth.currentUser; // Get the current user from Firebase
+            if (!user) throw new Error('User is not authenticated.');
+
             const payload = {
                 id: recipe.id,
                 title: recipe.title,
@@ -31,17 +36,8 @@ export default function RecipeDetailSection() {
                 instructions: instructions,
             };
 
-            // if the recipe is already saved, there should be no duplicates
-            const recipeExists = await fetch(`http://localhost:5000/api/recipes/${recipe.id}`, {
-                credentials: 'include'
-            });
-
-            if (recipeExists.ok) {
-                alert('Recipe already saved!');
-                return;
-            }
-
-            const response = await fetch('http://localhost:5000/api/recipes', {
+            // Post the recipe to the user's recipes endpoint
+            const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
