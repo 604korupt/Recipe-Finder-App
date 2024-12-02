@@ -120,7 +120,7 @@ export default function RecipeList({
                                                 </Link>
                                                 {/* Add button to delete recipe */}
                                                 <Button
-                                                    className="mt-2 h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                                    className="mt-2 !h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                                     onClick={() => handleDeleteRecipe(recipe.id)}
                                                 >
                                                     Delete Recipe
