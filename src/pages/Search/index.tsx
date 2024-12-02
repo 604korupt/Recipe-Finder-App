@@ -24,6 +24,11 @@ export default function SearchPage() {
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     
     useEffect(() => {
+        // when going to this page, scroll to the top of the page
+        window.scrollTo(0, 0);
+    }, []); // empty dependency array is used to run only once
+
+    useEffect(() => {
         // Only perform search if there's a query
         const query = searchParams.get('q');
         if (query) {
