@@ -112,7 +112,10 @@ export default function RecipeList({
                                                 <Heading as="h5" className="text-[20px] font-bold text-gray-900">
                                                     {recipe.title}
                                                 </Heading>
-                                                <Link to={`/saved-recipes/${recipe.id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                                <Link to={`/saved-recipes/${recipe.id}`} 
+                                                    className="font-poppins mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+                                                    style={{ color: 'white' }}
+                                                >
                                                     View Recipe Details
                                                 </Link>
                                                 {/* Add button to delete recipe */}

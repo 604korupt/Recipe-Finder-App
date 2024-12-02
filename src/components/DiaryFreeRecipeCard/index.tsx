@@ -20,7 +20,10 @@ const DairyFreeRecipeCard: React.FC<DairyFreeRecipeCardProps> = ({
                 className="w-full h-48 object-cover rounded-lg"
             />
             <h3 className="mt-2 text-lg font-semibold">{title}</h3>
-            <Link to={`/details/${id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+            <Link to={`/details/${id}`} 
+                className="font-poppins mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+                style={{ color: 'white' }}
+            >
                 Details
             </Link>
         </div>
