@@ -45,7 +45,8 @@ export default function RecipeDetailSection() {
                 credentials: 'include'
             });
             const userRecipes = await userRecipesResponse.json();
-            if (userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
+            // some didn't exist, so have to make sure it's an array
+            if (Array.isArray(userRecipes) && userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
                 alert('Recipe already saved!');
                 return;
             }
