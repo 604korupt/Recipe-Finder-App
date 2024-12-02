@@ -64,6 +64,27 @@ export default function RecipeList({
         setCurrentCount(prev => prev + 8);
     };
 
+    const handleDeleteRecipe = async (id: string) => {
+        try {
+            // before deleting, add a confirmation dialog
+            if (!window.confirm('Are you sure you want to delete this recipe?')) return;
+
+            const user = auth.currentUser;
+            if (!user) throw new Error('User is not authenticated.');
+            const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes/${id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            // remove the deleted recipe from the list
+            setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== id));
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+    };
+
     return (
         <div {...props} className={`${props.className} flex flex-col items-center gap-10 flex-1 container-xs`}>
             <div className="mx-2 flex items-center justify-between gap-5 self-stretch md:mx-0">
@@ -94,6 +115,13 @@ export default function RecipeList({
                                                 <Link to={`/saved-recipes/${recipe.id}`} className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                                                     View Recipe Details
                                                 </Link>
+                                                {/* Add button to delete recipe */}
+                                                <Button
+                                                    className="mt-2 h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                                    onClick={() => handleDeleteRecipe(recipe.id)}
+                                                >
+                                                    Delete Recipe
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>

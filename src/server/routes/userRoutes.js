@@ -64,4 +64,23 @@ router.get('/:firebaseUserId/recipes/:recipeId', async (req, res) => {
     }
 });
 
+// Delete a recipe for a user
+router.delete('/:firebaseUserId/recipes/:recipeId', async (req, res) => {
+    const { firebaseUserId, recipeId } = req.params;
+
+    try {
+        const user = await User.findOneAndUpdate(
+            { firebaseUserId },
+            { $pull: { recipes: { id: recipeId } } },
+            { new: true }
+        )
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({error: 'Error deleting'})
+    }
+});
+
 export default router; 
