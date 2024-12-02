@@ -99,7 +99,7 @@ export default function RecipeList({
                 <>
                     <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">
                         {visibleRecipes.map((recipe, index) => (
-                            <div key={recipe._id} className="flex flex-col gap-2 rounded-[16px] bg-white-a700 p-2 shadow-xs">
+                            <div key={recipe._id} className="flex flex-col gap-2 rounded-[16px] bg-white-a700 p-2 shadow-xs border border-gray-300">
                                 <Img
                                     src={recipe.image || `images/img_image_rounded_${index}.png`}
                                     alt={`${recipe.title} Image`}

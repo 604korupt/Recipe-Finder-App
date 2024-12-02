@@ -13,11 +13,11 @@ const DairyFreeRecipeCard: React.FC<DairyFreeRecipeCardProps> = ({
     image
 }) => {
     return (
-        <div className="flex flex-col items-center p-4 border rounded-lg">
+        <div className="flex flex-col items-center p-4 border border-gray-300 rounded-lg">
             <img 
-                src={image} 
-                alt={title}
-                className="w-full h-48 object-cover rounded-lg"
+            src={image} 
+            alt={title}
+            className="w-full h-48 object-cover rounded-lg"
             />
             <h3 className="mt-2 text-lg font-semibold">{title}</h3>
             <Link to={`/details/${id}`} 
