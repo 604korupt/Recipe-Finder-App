@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Heading, Img } from "./..";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
-import { set } from "mongoose";
 
 interface Recipe {
   _id: string;
@@ -26,7 +25,7 @@ export default function RecipeList({
 }: Props) {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [visibleRecipes, setVisibleRecipes] = useState<Recipe[]>([]);
-    const [currentCount, setCurrentCount] = useState(8);
+    const [currentCount, setCurrentCount] = useState(0);
     const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
@@ -57,20 +56,19 @@ export default function RecipeList({
         return () => unsubscribe(); // Cleanup subscription on unmount
     }, []);
 
+    // update the recipes displayed when the currentCount changes
     useEffect(() => {
-        setVisibleRecipes(recipes.slice(0, currentCount));
+        setVisibleRecipes(recipes.slice(currentCount, currentCount + 8));
     }, [recipes, currentCount]);
 
+    // when clicking on previous page, set count to max of 0 and currentCount - 8
     const handlePreviousPage = () => {
-        setCurrentCount(currentCount - 8);
-        console.log(currentCount);
-        setVisibleRecipes(recipes.slice(currentCount - 8, currentCount));
+        setCurrentCount((prevCount) => Math.max(0, prevCount - 8));
     };
 
+    // when clicking on next page, set count to min of recipes.length and currentCount + 8
     const handleNextPage = () => {
-        setCurrentCount(currentCount + 8);
-        console.log(currentCount);
-        setVisibleRecipes(recipes.slice(currentCount, currentCount + 8));
+        setCurrentCount((prevCount) => Math.min(recipes.length, prevCount + 8));
     };
 
     const handleDeleteRecipe = async (id: string) => {
@@ -148,7 +146,7 @@ export default function RecipeList({
                                 shape="round"
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg mr-4"
                                 onClick={handlePreviousPage}
-                                disabled={currentCount < 8}
+                                disabled={currentCount === 0}
                             >
                                 Previous Page
                             </Button>
@@ -156,7 +154,7 @@ export default function RecipeList({
                                 shape="round"
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg ml-4"
                                 onClick={handleNextPage}
-                                disabled={currentCount >= recipes.length}
+                                disabled={currentCount + 8 >= recipes.length}
                             >
                                 Next Page
                             </Button>
