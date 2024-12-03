@@ -35,17 +35,15 @@ const RecipeFinderSection: React.FC = () => {
                             as="h1"
                             className="font-urbanist text-[40px] font-bold tracking-[1.00px] text-gray-900_01 md:text-[38px] sm:text-[36px]"
                         >
-                            <span>Recipe&nbsp;</span>
-                            <span className="font-medium">finder</span>
+                            <Link
+                                to="/"
+                            >
+                                <span>Recipe&nbsp;</span>
+                                <span className="font-medium">finder</span>
+                            </Link>
                         </Heading>
 
                         <div className="flex gap-4">
-                            <Link 
-                                to="/"
-                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
-                            >
-                                Home
-                            </Link>
                             <Link 
                                 to="/search"
                                 className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
