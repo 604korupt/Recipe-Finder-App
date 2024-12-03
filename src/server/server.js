@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import recipesRouter from './routes/recipes.js';
 import userRoutes from './routes/userRoutes.js';
+import dotenv from 'dotenv';
 
 const app = express();
 
@@ -13,8 +14,12 @@ app.use(cors({
 }));
 app.use(express.json());
 
+dotenv.config({ path: './.env.local' });
+
+const URI = process.env.VITE_MONGO_URI;
+
 // MongoDB connection
-await mongoose.connect('mongodb://localhost:27017/recipe-app-test', {
+await mongoose.connect(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
