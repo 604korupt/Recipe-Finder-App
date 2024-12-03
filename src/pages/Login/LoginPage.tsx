@@ -1,9 +1,9 @@
 import React from "react";
-import { auth, provider } from "../../firebaseConfig";
+import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 
 const Login: React.FC = () => {
-    const handleLogin = async () => {
+    const handleLogin = async (provider: any) => {
         try {
             await signInWithPopup(auth, provider);
             // After login, redirect to the home page
@@ -16,11 +16,11 @@ const Login: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-top h-screen">
             {/* Heading */}
-            <h1 className="text-3xl font-bold mb-4">Login with Google</h1>
+            <h1 className="text-3xl font-bold mb-4">Login</h1>
             
             {/* Google sign in button */}
             <button
-                onClick={handleLogin}
+                onClick={() => handleLogin(googleProvider)}
                 className="gsi-material-button flex items-center justify-center px-6 py-2 bg-white text-black border border-black rounded hover:bg-gray-200 whitespace-nowrap"
                 style={{ margin: "10px" }}
             >
@@ -58,6 +58,15 @@ const Login: React.FC = () => {
                     </div>
                 </div>
             </button>
+            {/* Twitter sign in button */}
+            <button
+                onClick={() => handleLogin(twitterProvider)}
+                className="gsi-material-button flex items-center justify-center px-6 py-2 bg-white text-black border border-black rounded hover:bg-gray-200 whitespace-nowrap"
+                style={{ margin: "10px" }}
+            >
+            <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Twitter</span>
+            </button>
+                            
         </div>
     );
 };
