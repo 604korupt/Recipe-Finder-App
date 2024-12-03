@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Heading, Img } from "./..";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
+import { set } from "mongoose";
 
 interface Recipe {
   _id: string;
@@ -60,8 +61,16 @@ export default function RecipeList({
         setVisibleRecipes(recipes.slice(0, currentCount));
     }, [recipes, currentCount]);
 
-    const handleLoadMore = () => {
-        setCurrentCount(prev => prev + 8);
+    const handlePreviousPage = () => {
+        setCurrentCount(currentCount - 8);
+        console.log(currentCount);
+        setVisibleRecipes(recipes.slice(currentCount - 8, currentCount));
+    };
+
+    const handleNextPage = () => {
+        setCurrentCount(currentCount + 8);
+        console.log(currentCount);
+        setVisibleRecipes(recipes.slice(currentCount, currentCount + 8));
     };
 
     const handleDeleteRecipe = async (id: string) => {
@@ -134,13 +143,24 @@ export default function RecipeList({
                     </div>
 
                     {recipes.length > 8 && currentCount < recipes.length && (
-                        <Button
-                            shape="round"
-                            className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
-                            onClick={handleLoadMore}
-                        >
-                            Load More
-                        </Button>
+                        <div className="flex justify-between mt-4">
+                            <Button
+                                shape="round"
+                                className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg mr-4"
+                                onClick={handlePreviousPage}
+                                disabled={currentCount < 8}
+                            >
+                                Previous Page
+                            </Button>
+                            <Button
+                                shape="round"
+                                className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg ml-4"
+                                onClick={handleNextPage}
+                                disabled={currentCount >= recipes.length}
+                            >
+                                Next Page
+                            </Button>
+                        </div>
                     )}
                 </>
             )}
