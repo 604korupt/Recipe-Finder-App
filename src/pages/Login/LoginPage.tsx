@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-top h-screen">
             {/* Heading */}
-            <h1 className="text-3xl font-bold mb-4">Login</h1>
+            <h1 className="text-3xl font-bold mb-4">Login or Sign Up</h1>
             
             {/* Google sign in button */}
             <button
@@ -64,6 +64,18 @@ const Login: React.FC = () => {
                 className="gsi-material-button flex items-center justify-center px-6 py-2 bg-white text-black border border-black rounded hover:bg-gray-200 whitespace-nowrap"
                 style={{ margin: "10px" }}
             >
+                {/* this is the icon for Twitter */}
+                <div className="gsi-material-button-state">
+                    <div className="gsi-material-button-content-wrapper" style={{ display: "flex", alignItems: "center" }}>
+                        <div className="gsi-material-button-icon" style={{ display: "flex", alignItems: "center" }}>
+                            <svg width="26px" height="24px" viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" 
+                                    fill="black"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Twitter</span>
             </button>
                             
