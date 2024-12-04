@@ -58,17 +58,17 @@ export default function RecipeList({
 
     // update the recipes displayed when the currentCount changes
     useEffect(() => {
-        setVisibleRecipes(recipes.slice(currentCount, currentCount + 8));
+        setVisibleRecipes(recipes.slice(currentCount, currentCount + 4));
     }, [recipes, currentCount]);
 
-    // when clicking on previous page, set count to max of 0 and currentCount - 8
+    // when clicking on previous page, set count to max of 0 and prevcount
     const handlePreviousPage = () => {
-        setCurrentCount((prevCount) => Math.max(0, prevCount - 8));
+        setCurrentCount((prevCount) => Math.max(0, prevCount - 4));
     };
 
-    // when clicking on next page, set count to min of recipes.length and currentCount + 8
+    // when clicking on next page, set count to min of len recipes and prevcount
     const handleNextPage = () => {
-        setCurrentCount((prevCount) => Math.min(recipes.length, prevCount + 8));
+        setCurrentCount((prevCount) => Math.min(recipes.length, prevCount + 4));
     };
 
     const handleDeleteRecipe = async (id: string) => {
@@ -140,7 +140,7 @@ export default function RecipeList({
                         ))}
                     </div>
 
-                    {recipes.length > 8 && currentCount < recipes.length && (
+                    {recipes.length > 4 && currentCount < recipes.length && (
                         <div className="flex justify-between mt-4">
                             <Button
                                 shape="round"
@@ -154,7 +154,7 @@ export default function RecipeList({
                                 shape="round"
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg ml-4"
                                 onClick={handleNextPage}
-                                disabled={currentCount + 8 >= recipes.length}
+                                disabled={currentCount + 4 >= recipes.length}
                             >
                                 Next Page
                             </Button>
