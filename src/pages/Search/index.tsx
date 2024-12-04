@@ -19,7 +19,7 @@ export default function SearchPage() {
     const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
     const [searchResults, setSearchResults] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [displayCount, setDisplayCount] = useState(6);
+    const [displayCount, setDisplayCount] = useState(0);
     const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     
@@ -79,6 +79,14 @@ export default function SearchPage() {
     const handleLoadMore = () => {
         setDisplayCount(prev => prev + 6);
     };
+
+    const handlePreviousPage = () => {
+        setDisplayCount(prev => Math.max(0, prev - 6));
+    }
+
+    const handleNextPage = () => {
+        setDisplayCount(prev => Math.min(searchResults.length, prev + 6));
+    }
 
     return (
         <>
@@ -153,7 +161,7 @@ export default function SearchPage() {
                                         <div>Loading...</div>
                                     ) : (
                                         searchResults.length > 0 ? (
-                                            searchResults.slice(0, displayCount).map((recipe) => (
+                                            searchResults.slice(displayCount, displayCount + 6).map((recipe) => (
                                                 <DairyFreeRecipeCard
                                                     key={recipe.id}
                                                     id={recipe.id}
@@ -167,13 +175,24 @@ export default function SearchPage() {
                                     )}
                                 </div>
                                 {searchResults.length > 6 && displayCount < searchResults.length && (
-                                    <Button
-                                        shape="round"
-                                        className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg self-center"
-                                        onClick={handleLoadMore}
-                                    >
-                                        Load More
-                                    </Button>
+                                    <div className="flex justify-center w-full mt-4 mb-4 gap-4">
+                                        <Button
+                                            shape="round"
+                                            className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                                            onClick={handlePreviousPage}
+                                            disabled={displayCount === 0}
+                                        >
+                                            Previous Page
+                                        </Button>
+                                        <Button
+                                            shape="round"
+                                            className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                                            onClick={handleNextPage}
+                                            disabled={displayCount + 6 >= searchResults.length}
+                                        >
+                                            Next Page
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         </div>
