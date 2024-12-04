@@ -19,9 +19,9 @@ export default function SearchPage() {
     const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
     const [searchResults, setSearchResults] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [displayCount, setDisplayCount] = useState(0);
     const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
+    const [currentPage, setCurrentPage] = useState(0);
     
     useEffect(() => {
         // when going to this page, scroll to the top of the page
@@ -48,10 +48,10 @@ export default function SearchPage() {
         }
     }, [selectedAllergies]);
 
-    const performSearch = async (query: string) => {
+    const performSearch = async (query: string, page: number = 0) => {
+        const offset = page * 12;
         try {
-            const results = await spoonacularApi.searchRecipes(query, selectedDiets, selectedAllergies);
-            console.log("api response:", results);
+            const results = await spoonacularApi.searchRecipes(query, selectedDiets, selectedAllergies, offset);
             setSearchResults(results);
         } catch (error) {
             console.error('Error searching recipes:', error);
@@ -63,10 +63,8 @@ export default function SearchPage() {
         setIsLoading(true);
         try {
             const response = await spoonacularApi.searchRecipes(searchTerm);
-            console.log("api response:", response);
             // Ensure we're getting an array of results
             const results = Array.isArray(response) ? response : [];
-            console.log('Search Results:', results); // Debug log
             setSearchResults(results);
         } catch (error) {
             console.error('Error searching recipes:', error);
@@ -76,17 +74,19 @@ export default function SearchPage() {
         }
     };
 
-    const handleLoadMore = () => {
-        setDisplayCount(prev => prev + 6);
-    };
-
     const handlePreviousPage = () => {
-        setDisplayCount(prev => Math.max(0, prev - 6));
+        setCurrentPage(prev => Math.max(0, prev - 1));
     }
 
     const handleNextPage = () => {
-        setDisplayCount(prev => Math.min(searchResults.length, prev + 6));
+        setCurrentPage(prev => prev + 1);
     }
+
+    useEffect(() => {
+        if (searchTerm) {
+            performSearch(searchTerm, currentPage);
+        }
+    }, [currentPage]);
 
     return (
         <>
@@ -161,7 +161,8 @@ export default function SearchPage() {
                                         <div>Loading...</div>
                                     ) : (
                                         searchResults.length > 0 ? (
-                                            searchResults.slice(displayCount, displayCount + 6).map((recipe) => (
+                                            // display 12 recipes per page
+                                            searchResults.slice(0, 12).map((recipe) => (
                                                 <DairyFreeRecipeCard
                                                     key={recipe.id}
                                                     id={recipe.id}
@@ -174,13 +175,14 @@ export default function SearchPage() {
                                         )
                                     )}
                                 </div>
-                                {searchResults.length > 6 && displayCount < searchResults.length && (
+                                {/* the button should appear when there are search results */}
+                                {searchResults.length > 0 && (
                                     <div className="flex justify-center w-full mt-4 mb-4 gap-4">
                                         <Button
                                             shape="round"
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handlePreviousPage}
-                                            disabled={displayCount === 0}
+                                            disabled={currentPage === 0}
                                         >
                                             Previous Page
                                         </Button>
@@ -188,7 +190,7 @@ export default function SearchPage() {
                                             shape="round"
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handleNextPage}
-                                            disabled={displayCount + 6 >= searchResults.length}
+                                            disabled={searchResults.length < 12}
                                         >
                                             Next Page
                                         </Button>
