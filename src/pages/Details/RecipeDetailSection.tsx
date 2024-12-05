@@ -30,6 +30,11 @@ export default function RecipeDetailSection() {
             
             const user = auth.currentUser; // Get the current user from Firebase
             if (!user) throw new Error('User is not authenticated.');
+            // if the user is using email/password, and their email is not verified, don't allow saving
+            if (!user.emailVerified) {
+                alert('Please verify your email before saving recipes.');
+                return;
+            }
 
             const payload = {
                 id: recipe.id,
