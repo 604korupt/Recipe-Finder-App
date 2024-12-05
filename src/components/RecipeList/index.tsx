@@ -147,6 +147,7 @@ export default function RecipeList({
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg mr-4"
                                 onClick={handlePreviousPage}
                                 disabled={currentCount === 0}
+                                style={{ backgroundColor: currentCount === 0 ? '#f3f4f6' : '' }}
                             >
                                 Previous Page
                             </Button>
@@ -155,6 +156,7 @@ export default function RecipeList({
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg ml-4"
                                 onClick={handleNextPage}
                                 disabled={currentCount + 4 >= recipes.length}
+                                style={{ backgroundColor: currentCount + 4 >= recipes.length ? '#f3f4f6' : '' }}
                             >
                                 Next Page
                             </Button>
