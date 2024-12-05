@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 
@@ -9,6 +10,16 @@ const Login: React.FC = () => {
     const [isSignUpMode, setIsSignUpMode] = useState<boolean>(false);  // Toggle between login and sign up
     const [showPasswordRequirements, setShowPasswordRequirements] = useState<boolean>(false);  // Show password requirements
     const [signedUp, setSignedUp] = useState<boolean>(false);  // Show message after sign-up
+    const [, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    // if user is already logged in, redirect to the profile page
+    auth.onAuthStateChanged(user => {
+        setIsLoggedIn(!!user);
+        if (user) {
+            navigate("/profile");
+        }
+    });
 
     const handleLogin = async (provider: any) => {
         try {
