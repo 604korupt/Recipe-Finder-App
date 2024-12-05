@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../../firebaseConfig';
-import { User, signOut, updateEmail, updatePassword, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail } from 'firebase/auth';
 
 const Profile = () => {
     const [newEmail, setNewEmail] = useState('');
@@ -71,7 +71,8 @@ const Profile = () => {
             if (!emailRegex.test(newEmail)) {
                 throw new Error('Invalid email address');
             }
-            await updateEmail(user, newEmail);
+            // verify before updating email
+            await verifyBeforeUpdateEmail(user, newEmail);
             console.log('Email updated');
             window.location.reload();
         } catch (error) {
@@ -159,7 +160,14 @@ const Profile = () => {
                             onChange={(e) => setNewEmail(e.target.value)}
                             className="px-4 py-2 border border-gray-300 rounded-md"
                         />
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">Change Email</button>
+                        <button 
+                            type="submit" 
+                            className="px-4 py-2 bg-green-500 text-white rounded-md"
+                            disabled={!newEmail}
+                            style = {{backgroundColor: !newEmail ? "#f3f4f6" : ""}}
+                        >
+                            Change Email
+                        </button>
                     </form>
 
                     {errorPassword && <p className="text-red-500">{errorPassword}</p>}
@@ -187,7 +195,14 @@ const Profile = () => {
                                 </ul>
                             </div>
                         )}
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">Change Password</button>
+                        <button 
+                            type="submit" 
+                            className="px-4 py-2 bg-green-500 text-white rounded-md"
+                            disabled={!newPassword}
+                            style = {{backgroundColor: !newPassword ? "#f3f4f6" : ""}}
+                        >
+                            Change Password
+                        </button>
                     </form>
                 </>
             )}
