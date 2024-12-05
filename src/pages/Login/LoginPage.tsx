@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
@@ -14,11 +14,14 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
 
     // if user is already logged in, redirect to the profile page
-    auth.onAuthStateChanged(user => {
-        setIsLoggedIn(!!user);
-        if (user) {
-            navigate("/profile");
-        }
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setIsLoggedIn(!!user);
+            if (user) {
+                navigate("/profile");
+            }
+        });
+        return unsubscribe;
     });
 
     const handleLogin = async (provider: any) => {
