@@ -61,8 +61,9 @@ export default function SearchPage() {
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+        const sanitizedSearchTerm = searchTerm.trim().replace(/[<>\"\'\{\}]/g, '');
         try {
-            const response = await spoonacularApi.searchRecipes(searchTerm);
+            const response = await spoonacularApi.searchRecipes(sanitizedSearchTerm);
             // Ensure we're getting an array of results
             const results = Array.isArray(response) ? response : [];
             setSearchResults(results);
