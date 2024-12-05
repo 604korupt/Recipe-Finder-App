@@ -134,7 +134,7 @@ const Profile = () => {
             {user ? (
                 <div className="flex flex-col items-start gap-2">
                     <p className="text-lg">Name: {user.displayName || "No display name set"}</p>
-                    <p className="text-lg">Email: {user.email}</p>
+                    <p className="text-lg">Email: {user.email || "Using Twitter"}</p>
                 </div>
             ) : (
                 <p>User not authenticated</p>
