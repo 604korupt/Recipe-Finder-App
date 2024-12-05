@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 
 const Login: React.FC = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [isSignUpMode, setIsSignUpMode] = useState<boolean>(false);  // Toggle between login and sign up
+    const [showPasswordRequirements, setShowPasswordRequirements] = useState<boolean>(false);  // Show password requirements
+    const [signedUp, setSignedUp] = useState<boolean>(false);  // Show message after sign-up
+
     const handleLogin = async (provider: any) => {
         try {
             await signInWithPopup(auth, provider);
@@ -10,6 +17,40 @@ const Login: React.FC = () => {
             window.location.href = "/";
         } catch (error) {
             console.error("Error during login:", error);
+        }
+    };
+
+    const handleSignUp = async (e: React.FormEvent) => {
+        // Prevent the form from refreshing the page
+        e.preventDefault();
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            // After successful sign-up, send email verification
+            const user = auth.currentUser;
+            if (user && !user.emailVerified) {
+                await sendEmailVerification(user);
+                setSignedUp(true);                
+            }
+        } catch (error) {
+            console.error("Error during sign-up:", error);
+            setError("Sign-up failed. Please try again.");
+        }
+    };
+
+    // Handle login with email and password
+    const handleLoginWithEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            // if email is not verified, do not allow login
+            const { user } = await signInWithEmailAndPassword(auth, email, password);
+            if (user && !user.emailVerified) {
+                setError("Please verify your email before logging in.");
+                return;
+            }
+            window.location.href = "/";
+        } catch (error) {
+            console.error("Error during login:", error);
+            setError("Login failed. Please try again.");
         }
     };
 
@@ -76,9 +117,65 @@ const Login: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Twitter</span>
+                <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Twitter</span>
             </button>
-                            
+
+            {/* Display error message */}
+            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+
+            {/* Display message after sign-up */}
+            {signedUp && <p className="text-green-500 text-sm mb-2">Sign-up successful! Please check your email to verify your account.</p>}
+
+            {/* Toggle between login and sign-up form */}
+            <form className="flex flex-col items-center" onSubmit={isSignUpMode ? handleSignUp : handleLoginWithEmail}>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    className="mb-2 p-2 border border-gray-300 rounded"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <div className="relative w-full">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        className="mb-2 p-2 border border-gray-300 rounded w-full"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        onFocus={() => setShowPasswordRequirements(true)}
+                        onBlur={() => setShowPasswordRequirements(false)}
+                    />
+                    {isSignUpMode && showPasswordRequirements && (
+                        <div className="mt-1 p-2 bg-white">
+                            <p className="text-sm">Password must contain:</p>
+                            <ul className="text-sm list-disc list-inside">
+                                <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>At least 6 characters</li>
+                                <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
+                                <li className={/[a-z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
+                                <li className={/[0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one number</li>
+                                <li className={/[^A-Za-z0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one special character</li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
+                <button
+                    type="submit"
+                    className={`font-poppins px-6 py-2 bg-green-500 text-white border rounded hover:bg-green-600 mb-2`}
+                    style={{ color: "white" }}
+                >
+                    {isSignUpMode ? "Sign Up" : "Login"}
+                </button>
+            </form>
+
+            {/* Toggle between login and sign-up modes */}
+            <button
+                onClick={() => setIsSignUpMode(!isSignUpMode)}
+                className="text-sm text-blue-500 hover:underline"
+            >
+                {isSignUpMode ? "Already have an account? Log in" : "Don't have an account? Sign up"}
+            </button>         
         </div>
     );
 };
