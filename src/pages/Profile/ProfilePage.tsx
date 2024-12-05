@@ -40,6 +40,7 @@ const Profile = () => {
     };
 
     const handleChangeDisplayName = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             const user = auth.currentUser;
             if (!user) {
@@ -50,30 +51,37 @@ const Profile = () => {
             // Update the user's display name
             await updateProfile(user, { displayName: sanitizedNewName });
             console.log('Display name updated');
+            window.location.reload();
         } catch (error) {
-            e.preventDefault();
             setError('Error updating display name');
             console.error('Error updating display name:', error);
         }
     };
 
     const handleChangeEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             const user = auth.currentUser;
             if (!user) {
                 throw new Error('User is not authenticated');
             }
 
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // if the email does not meet the requirements in the regex, throw an error
+            if (!emailRegex.test(newEmail)) {
+                throw new Error('Invalid email address');
+            }
             await updateEmail(user, newEmail);
             console.log('Email updated');
+            window.location.reload();
         } catch (error) {
-            e.preventDefault();
             setErrorEmail('Error updating email');
             console.error('Error updating email:', error);
         }
     };
 
-    const handleChangePassword = async (e: React.FormEvent) => {        
+    const handleChangePassword = async (e: React.FormEvent) => {       
+        e.preventDefault(); 
         try {
             const user = auth.currentUser;
             if (!user) {
@@ -99,8 +107,8 @@ const Profile = () => {
 
             await updatePassword(user, newPassword);
             console.log('Password updated');
+            window.location.reload();
         } catch (error) {
-            e.preventDefault();
             setErrorPassword('Error updating password');
             console.error('Error updating password:', error);
         }
