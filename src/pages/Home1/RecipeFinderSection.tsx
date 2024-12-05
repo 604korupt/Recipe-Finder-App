@@ -1,7 +1,6 @@
 import { Heading } from "../../components";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
-import { signOut } from "firebase/auth";
 import { useState, useEffect } from "react";
 
 const RecipeFinderSection: React.FC = () => {
@@ -13,17 +12,6 @@ const RecipeFinderSection: React.FC = () => {
         });
         return () => unsubscribe();
     }, []);
-
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            // after logout, redirect to home page
-            window.location.href = "/";
-            console.log("Logout successful");
-        } catch (error) {
-            console.error("Error during logout:", error);
-        }
-    };
 
     return (
         <>
@@ -56,14 +44,14 @@ const RecipeFinderSection: React.FC = () => {
                             >
                                 Random Recipe
                             </Link>
-                            {/* this is the login and log off button */}
+                            {/* when user is logged in, show profile page, otherwise show login page */}
                             {isLoggedIn ? (
-                                <button
-                                    onClick={handleLogout}
+                                <Link
+                                    to="/profile"
                                     className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
                                 >
-                                    Logout
-                                </button>
+                                    Profile
+                                </Link>
                             ) : (
                                 <Link
                                     to="/login"
