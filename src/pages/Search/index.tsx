@@ -183,6 +183,7 @@ export default function SearchPage() {
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handlePreviousPage}
                                             disabled={currentPage === 0}
+                                            style={{ backgroundColor: currentPage === 0 ? '#f3f4f6' : '' }}
                                         >
                                             Previous Page
                                         </Button>
@@ -191,6 +192,7 @@ export default function SearchPage() {
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handleNextPage}
                                             disabled={searchResults.length < 12}
+                                            style={{ backgroundColor: searchResults.length < 12 ? '#f3f4f6' : '' }}
                                         >
                                             Next Page
                                         </Button>
