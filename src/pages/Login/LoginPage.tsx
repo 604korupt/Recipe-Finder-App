@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         try {
             await signInWithPopup(auth, provider);
             // After login, redirect to the home page
-            window.location.href = "/";
+            navigate("/");
         } catch (error) {
             console.error("Error during login:", error);
         }
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
                 setError("Please verify your email before logging in.");
                 return;
             }
-            window.location.href = "/";
+            navigate("/");
         } catch (error) {
             console.error("Error during login:", error);
             setError("Login failed. Please try again.");
