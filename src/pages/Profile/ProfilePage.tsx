@@ -13,6 +13,8 @@ const Profile = () => {
     const [user, setUser] = useState<User | null>(null); // user can be null or User
     const [loading, setLoading] = useState(true); // to handle loading state
     const [showPasswordRequirements, setShowPasswordRequirements] = useState<boolean>(false);
+    const [successEmail, setSuccessEmail] = useState('');
+    const [successPassword, setSuccessPassword] = useState('');
     const navigate = useNavigate();
 
 
@@ -76,7 +78,9 @@ const Profile = () => {
             // verify before updating email
             await verifyBeforeUpdateEmail(user, newEmail);
             console.log('Email updated');
-            window.location.reload();
+            //window.location.reload();
+            setNewEmail('');
+            setSuccessEmail('Please check your email to verify the new email address.');
         } catch (error) {
             setErrorEmail('Error updating email');
             console.error('Error updating email:', error);
@@ -110,7 +114,9 @@ const Profile = () => {
 
             await updatePassword(user, newPassword);
             console.log('Password updated');
-            window.location.reload();
+            //window.location.reload();
+            setNewPassword('');
+            setSuccessPassword('Password updated successfully!');
         } catch (error) {
             setErrorPassword('Error updating password');
             console.error('Error updating password:', error);
@@ -152,6 +158,7 @@ const Profile = () => {
                     </form>
 
                     {errorEmail && <p className="text-red-500">{errorEmail}</p>}
+                    {successEmail && <p className="text-green-500">{successEmail}</p>}
 
                     <form className="flex flex-col gap-2" onSubmit={handleChangeEmail}>
                         <label htmlFor="email" className="text-lg">Change Email:</label>
@@ -173,6 +180,7 @@ const Profile = () => {
                     </form>
 
                     {errorPassword && <p className="text-red-500">{errorPassword}</p>}
+                    {successPassword && <p className="text-green-500">{successPassword}</p>}
 
                     <form className="flex flex-col gap-2" onSubmit={handleChangePassword}>
                         <label htmlFor="password" className="text-lg">Change Password:</label>
