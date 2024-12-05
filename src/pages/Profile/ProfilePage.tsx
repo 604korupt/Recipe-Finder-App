@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebaseConfig';
 import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail } from 'firebase/auth';
 
@@ -12,6 +13,7 @@ const Profile = () => {
     const [user, setUser] = useState<User | null>(null); // user can be null or User
     const [loading, setLoading] = useState(true); // to handle loading state
     const [showPasswordRequirements, setShowPasswordRequirements] = useState<boolean>(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const Profile = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            window.location.href = "/"; // Or use React Router's navigate
+            navigate('/');
             console.log("Logout successful");
         } catch (error) {
             console.error("Error during logout:", error);
