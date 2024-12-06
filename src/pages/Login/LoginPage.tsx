@@ -13,11 +13,13 @@ const Login: React.FC = () => {
     const [, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
 
-    // if user is already logged in, redirect to the profile page
+    // if user is already logged in, but using email/password, and their email is not verified, don't switch to profile
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setIsLoggedIn(!!user);
-            if (user) {
+            if (user?.providerData.some((userInfo) => userInfo.providerId === 'password') && !user.emailVerified) {
+                return;
+            } else if (user) {
                 navigate("/profile");
             }
         });
