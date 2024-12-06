@@ -19,10 +19,7 @@ dotenv.config({ path: './.env.local' });
 const URI = process.env.VITE_MONGO_URI;
 
 // MongoDB connection
-await mongoose.connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+await mongoose.connect(URI);
 
 // Routes
 app.use('/api/recipes', recipesRouter);
