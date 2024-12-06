@@ -13,6 +13,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Get a user
+router.get('/:firebaseUserId', async (req, res) => {
+    const { firebaseUserId } = req.params;
+
+    try {
+        const user = await User.findOne({ firebaseUserId });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({error: 'Error finding user' });
+    }
+});
+
 // Add a recipe to a user
 router.post('/:firebaseUserId/recipes', async (req, res) => {
     const { firebaseUserId } = req.params;
@@ -80,6 +95,21 @@ router.delete('/:firebaseUserId/recipes/:recipeId', async (req, res) => {
         res.json(user);
     } catch (error) {
         res.status(500).json({error: 'Error deleting'})
+    }
+});
+
+// Delete a user
+router.delete('/:firebaseUserId', async (req, res) => {
+    const { firebaseUserId } = req.params;
+
+    try {
+        const user = await User.findOneAndDelete({ firebaseUserId });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting user' });
     }
 });
 

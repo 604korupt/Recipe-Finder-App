@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebaseConfig';
-import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail } from 'firebase/auth';
+import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail, deleteUser} from 'firebase/auth';
 
 const Profile = () => {
     const [newEmail, setNewEmail] = useState('');
@@ -123,6 +123,30 @@ const Profile = () => {
         }
     };
 
+    const handleDeleteAccount = async () => {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                throw new Error('User is not authenticated');
+            }
+            // before deleting, add a confirmation dialog
+            if (!window.confirm('Are you sure you want to delete your account?')) return;
+            // Delete the user's account from database first
+            await fetch(`http://localhost:5000/api/users/${user.uid}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            // Delete the user's account from authentication
+            await deleteUser(user);
+
+            console.log('Account deleted');
+            
+            navigate('/');
+        } catch (error) {
+            console.error('Error deleting account:', error);
+        }
+    };
+
     // If loading, display a loading state
     if (loading) {
         return <div className="flex flex-col items-center gap-5">Loading...</div>;
@@ -225,6 +249,14 @@ const Profile = () => {
             </button>) : (
                 <p></p>
             )}
+
+            {/* delete account button */}
+            <button
+                onClick={handleDeleteAccount}
+                className="text-sm text-blue-500 hover:underline"
+            >
+                Delete Account
+            </button>
             
         </div>
     );
