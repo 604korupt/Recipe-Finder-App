@@ -40,12 +40,12 @@ const Login: React.FC = () => {
         // Prevent the form from refreshing the page
         e.preventDefault();
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             // After successful sign-up, send email verification
-            const user = auth.currentUser;
+            const user = userCredential.user;
             if (user && !user.emailVerified) {
                 await sendEmailVerification(user);
-                setSignedUp(true);                
+                setSignedUp(true);
             }
         } catch (error) {
             console.error("Error during sign-up:", error);
