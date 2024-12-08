@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 
@@ -176,6 +176,8 @@ const Login: React.FC = () => {
                         </div>
                     )}
                 </div>
+                {/* forgot password link */}
+                <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">Forgot password?</Link>
                 <button
                     type="submit"
                     className={`font-poppins px-6 py-2 bg-green-500 text-white border rounded hover:bg-green-600 mb-2`}
