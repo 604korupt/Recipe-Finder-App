@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import PopUp from "reactjs-popup";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
@@ -163,17 +164,24 @@ const Login: React.FC = () => {
                         onFocus={() => setShowPasswordRequirements(true)}
                         onBlur={() => setShowPasswordRequirements(false)}
                     />
-                    {isSignUpMode && showPasswordRequirements && (
-                        <div className="mt-1 p-2 bg-white">
-                            <p className="text-sm">Password must contain:</p>
-                            <ul className="text-sm list-disc list-inside">
-                                <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>At least 6 characters</li>
-                                <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
-                                <li className={/[a-z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
-                                <li className={/[0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one number</li>
-                                <li className={/[^A-Za-z0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one special character</li>
-                            </ul>
-                        </div>
+                    {isSignUpMode && (
+                        <PopUp
+                            trigger={<div />}
+                            position="right center"
+                            open={showPasswordRequirements}
+                            on="focus"
+                        >
+                            <div className="mt-1 p-2 bg-white border border-gray-300 rounded">
+                                <p className="text-sm">Password must contain:</p>
+                                <ul className="text-sm list-disc list-inside">
+                                    <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>At least 6 characters</li>
+                                    <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
+                                    <li className={/[a-z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
+                                    <li className={/[0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one number</li>
+                                    <li className={/[^A-Za-z0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one special character</li>
+                                </ul>
+                            </div>
+                        </PopUp>
                     )}
                 </div>
                 {/* forgot password link */}
