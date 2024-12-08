@@ -193,7 +193,7 @@ const Login: React.FC = () => {
                 className="text-sm text-blue-500 hover:underline"
             >
                 {isSignUpMode ? "Already have an account? Log in" : "Don't have an account? Sign up"}
-            </button>         
+            </button>
         </div>
     );
 };
