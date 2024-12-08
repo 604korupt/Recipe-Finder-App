@@ -23,7 +23,7 @@ export const spoonacularApi = {
           apiKey: API_KEY,
           query,
           addRecipeInformation: true,
-          number: 99,
+          number: 12,
           diet: diets.join(','), 
           intolerances: intolerences.join(','),
           offset: offset
