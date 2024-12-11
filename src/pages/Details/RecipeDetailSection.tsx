@@ -8,6 +8,7 @@ export default function RecipeDetailSection() {
     const { id } = useParams<{ id: string }>();
     const [recipe, setRecipe] = useState<any>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [message, setMessage] = useState<string | null>(null); 
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -22,6 +23,7 @@ export default function RecipeDetailSection() {
     const handleSaveRecipe = async () => {
         try {
             setIsSaving(true);
+            setMessage(null);
 
             if (!recipe) throw new Error('Recipe data is not available.');
 
@@ -32,7 +34,7 @@ export default function RecipeDetailSection() {
             if (!user) throw new Error('User is not authenticated.');
             // if the user is using email/password, and their email is not verified, don't allow saving
             if (user.providerData.some((userInfo) => userInfo.providerId === 'password') && !user.emailVerified) {
-                alert('Please verify your email before saving recipes.');
+                setMessage('Please verify your email before saving recipes.');
                 return;
             }
 
@@ -52,7 +54,7 @@ export default function RecipeDetailSection() {
             const userRecipes = await userRecipesResponse.json();
             // some didn't exist, so have to make sure it's an array
             if (Array.isArray(userRecipes) && userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
-                alert('Recipe already saved!');
+                setMessage('Recipe already saved!');
                 return;
             }
 
@@ -69,13 +71,13 @@ export default function RecipeDetailSection() {
             const data = await response.json();
             
             if (response.ok) {
-                alert('Recipe saved successfully!');
+                setMessage('Recipe saved successfully!');
             } else {
                 throw new Error(data.error || 'Failed to save recipe');
             }
         } catch (error) {
             console.error('Error saving recipe:', error);
-            alert(error instanceof Error ? error.message : 'Failed to save recipe');
+            setMessage(error instanceof Error ? error.message : 'Failed to save recipe');
         } finally {
             setIsSaving(false);
         }
@@ -89,6 +91,11 @@ export default function RecipeDetailSection() {
                         <Heading size="headinglg" as="h2" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
                             Recipe Detail
                         </Heading>
+                        {message && (
+                        <div className={`mt-4 text-center ${message.startsWith('Recipe saved') ? 'text-green-500' : 'text-red-500'}`}>
+                            {message}
+                        </div>
+                        )}
                         <div className="flex justify-center mt-4">
                             <button
                                 onClick={handleSaveRecipe}
