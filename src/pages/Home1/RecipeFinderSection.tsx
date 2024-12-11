@@ -44,7 +44,8 @@ const RecipeFinderSection: React.FC = () => {
                             </Link>
                             <Link 
                                 to="/random"
-                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300"
+                                style={{ color: "#f4f4f4" }}
                             >
                                 Random Recipe
                             </Link>
