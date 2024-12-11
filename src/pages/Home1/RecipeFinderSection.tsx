@@ -34,13 +34,17 @@ const RecipeFinderSection: React.FC = () => {
                         <div className="flex gap-4">
                             <Link 
                                 to="/search"
-                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
                             >
-                                Search
+                                <img
+                                    src="/images/img_magnifying_glass.svg"
+                                    alt="search"
+                                    className="w-5 h-5"
+                                />
                             </Link>
                             <Link 
                                 to="/random"
-                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
                             >
                                 Random Recipe
                             </Link>
@@ -48,16 +52,24 @@ const RecipeFinderSection: React.FC = () => {
                             {isLoggedIn ? (
                                 <Link
                                     to="/profile"
-                                    className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                    className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
                                 >
-                                    Profile
+                                    <img
+                                        src="/images/img_user.svg"
+                                        alt="profile"
+                                        className="w-5 h-5"
+                                    />
                                 </Link>
                             ) : (
                                 <Link
                                     to="/login"
-                                    className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                    className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
                                 > 
-                                    Login
+                                    <img 
+                                        src="/images/img_user.svg"
+                                        alt="login"
+                                        className="w-5 h-5"
+                                    />
                                 </Link>
                             )}
                         </div>
