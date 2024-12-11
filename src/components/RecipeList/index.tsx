@@ -27,6 +27,8 @@ export default function RecipeList({
     const [visibleRecipes, setVisibleRecipes] = useState<Recipe[]>([]);
     const [currentCount, setCurrentCount] = useState(0);
     const [loading, setLoading] = useState(true); // Add loading state
+    const [deletingRecipeId, setDeletingRecipeId] = useState<string | null>(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -71,25 +73,40 @@ export default function RecipeList({
         setCurrentCount((prevCount) => Math.min(recipes.length, prevCount + 4));
     };
 
-    const handleDeleteRecipe = async (id: string) => {
+    const handleDeleteRecipe = async () => {
+        if (!deletingRecipeId) return;
         try {
-            // before deleting, add a confirmation dialog
-            if (!window.confirm('Are you sure you want to delete this recipe?')) return;
-
             const user = auth.currentUser;
             if (!user) throw new Error('User is not authenticated.');
-            const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/users/${user.uid}/recipes/${deletingRecipeId}`,
+                {
                 method: 'DELETE',
-                credentials: 'include'
-            });
+                credentials: 'include',
+                }
+            );
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             // remove the deleted recipe from the list
-            setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== id));
+            setRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.id !== deletingRecipeId));
         } catch (error) {
             console.error('Error deleting recipe:', error);
+        } finally {
+            setDeletingRecipeId(null); // Reset deleting state
+            setShowConfirmation(false); // Hide confirmation dialog
         }
+    };
+
+    // Show confirmation dialog for a specific recipe
+    const confirmDelete = (id: string) => {
+        setDeletingRecipeId(id);
+        setShowConfirmation(true);
+    };
+
+    // Cancel the deletion
+    const cancelDelete = () => {
+        setShowConfirmation(false);
+        setDeletingRecipeId(null);
     };
 
     return (
@@ -119,19 +136,39 @@ export default function RecipeList({
                                                 <Heading as="h5" className="text-[20px] font-bold text-gray-900">
                                                     {recipe.title}
                                                 </Heading>
-                                                <Link to={`/saved-recipes/${recipe.id}`} 
+                                                <Link to={`/saved-recipes/${recipe.id}`}
                                                     className="font-poppins mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
                                                     style={{ color: 'white' }}
                                                 >
                                                     View Recipe Details
                                                 </Link>
-                                                {/* Add button to delete recipe */}
-                                                <Button
-                                                    className="mt-2 !h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                                                    onClick={() => handleDeleteRecipe(recipe.id)}
-                                                >
-                                                    Delete Recipe
-                                                </Button>
+                                                {showConfirmation && deletingRecipeId === recipe.id ? (
+                                                    <div className="text-[17px] font-bold mt-2 text-center">
+                                                        <p>Are you sure you want to delete this recipe?</p>
+                                                        <div className="flex gap-2 mt-2 justify-center">
+                                                        <Button
+                                                            className="!h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                                            onClick={handleDeleteRecipe}
+                                                        >
+                                                            Yes, Delete
+                                                        </Button>
+                                                        <Button
+                                                            className="!h-10 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                                            onClick={cancelDelete}
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                        </div>
+                                                    </div>
+                                                    ) : (
+                                                    // Otherwise, show the regular Delete button
+                                                    <Button
+                                                        className="mt-2 !h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                                        onClick={() => confirmDelete(recipe.id)}
+                                                    >
+                                                        Delete Recipe
+                                                    </Button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -165,5 +202,5 @@ export default function RecipeList({
                 </>
             )}
         </div>
-    );
+        );
 }
