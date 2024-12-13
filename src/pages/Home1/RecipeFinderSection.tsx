@@ -15,8 +15,16 @@ const RecipeFinderSection: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
+
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
+        localStorage.setItem('language', lng);
     };
 
     return (
@@ -83,7 +91,6 @@ const RecipeFinderSection: React.FC = () => {
                             <select 
                                 onChange={(e) => {
                                     changeLanguage(e.target.value);
-                                    localStorage.setItem('language', e.target.value);
                                 }} 
                                 value={i18n.language}
                                 className="font-poppins px-4 py-2 bg-gray-200 rounded-md w-32"

@@ -2,9 +2,9 @@
     "welcome": "Welcome to the Recipe Finder",
     "settings": "Settings",
     "language": "Language",
-    "chineseTraditional": "Traditional Chinese",
-    "english": "English",
+
     "randomRecipe": "Random Recipe",
+
     "allRecipes": "All Recipes",
     "previous": "Previous Page",
     "next": "Next Page",
@@ -13,6 +13,7 @@
     "deleteConfirm": "Are you sure you want to delete this recipe?",
     "yesDelete": "Yes, Delete",
     "cancel": "Cancel",
+
     "login": "Login or Sign Up",
     "google": "Sign in with Google",
     "twitter": "Sign in with Twitter",
@@ -26,5 +27,16 @@
     "alreadyAccount": "Already have an account? Log in",
     "signedUpFail": "Sign-up failed. Please try again.",
     "loggedInFail": "Login failed. Please try again.",
-    "emailNotVerified": "Please verify your email before logging in."
+    "emailNotVerified": "Please verify your email before logging in.",
+
+    "forgotPWPage": "Forgot Password",
+    "forgotPWInstructions": "Enter your email to reset your password:",
+    "resetPW": "Reset Password",
+
+    "searchRecipes": "Search Recipes",
+    "searchPlaceholder": "Search for recipes...",
+    "search": "Search",
+    "noRecipesFound": "No recipes found",
+    "details": "Details",
+    "loading": "Loading..."
 }

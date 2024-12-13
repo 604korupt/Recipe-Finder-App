@@ -1,10 +1,12 @@
 import React from 'react';
 import { getAuth, sendPasswordResetEmail  } from "firebase/auth";
+import { useTranslation } from 'react-i18next';
 
 
 const ForgotPWPage: React.FC = () => {
     const [email, setEmail] = React.useState("");
     const [, setError] = React.useState("");
+    const { t } = useTranslation();
 
     const handleResetPassword = async () => {
         try {
@@ -18,7 +20,7 @@ const ForgotPWPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-4">Forgot Password</h1>
+            <h1 className="text-3xl font-bold mb-4">{t('forgotPWPage')}</h1>
             <form 
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -26,10 +28,10 @@ const ForgotPWPage: React.FC = () => {
                 }}
                 className="flex flex-col items-center"
             >
-                <p className="text-gray-600 mb-4">Enter your email to reset your password:</p>
+                <p className="text-gray-600 mb-4">{t('forgotPWInstructions')}</p>
                 <input 
                     type="email"
-                    placeholder="Email"
+                    placeholder={t('emailPlaceholder')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="border border-gray-300 p-2 rounded-lg mt-4"
@@ -41,7 +43,7 @@ const ForgotPWPage: React.FC = () => {
                     disabled={!email}
                     style={{ backgroundColor: !email ? "#f3f4f6" : "" }}
                 >
-                    Reset Password
+                    {t('resetPW')}
                 </button>
             </form>
         </div>

@@ -119,7 +119,7 @@ export default function RecipeList({
             </div>
 
             {loading ? ( // Show loading state only while fetching
-                <div>Loading...</div>
+                <div>{t('loading')}</div>
             ) : (
                 <>
                     <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">

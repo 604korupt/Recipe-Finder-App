@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { useSearchParams } from 'react-router-dom';
 import Allergies from "../../components/Allergies";
+import { useTranslation } from "react-i18next";
 
 interface Recipe {
     id: number;
@@ -22,6 +23,7 @@ export default function SearchPage() {
     const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const { t, i18n } = useTranslation();
     
     useEffect(() => {
         // when going to this page, scroll to the top of the page
@@ -47,6 +49,20 @@ export default function SearchPage() {
             performSearch(searchTerm);
         }
     }, [selectedAllergies]);
+
+    useEffect(() => {
+        if (searchTerm) {
+            performSearch(searchTerm, currentPage);
+        }
+    }, [currentPage]);
+
+    useEffect(() => {
+        // Retrieve the language from localStorage and set it in i18n
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
 
     const performSearch = async (query: string, page: number = 0) => {
         const offset = page * 12;
@@ -83,12 +99,6 @@ export default function SearchPage() {
         setCurrentPage(prev => prev + 1);
     }
 
-    useEffect(() => {
-        if (searchTerm) {
-            performSearch(searchTerm, currentPage);
-        }
-    }, [currentPage]);
-
     return (
         <>
             <Helmet>
@@ -107,7 +117,7 @@ export default function SearchPage() {
                                     as="h2"
                                     className="text-[64px] font-bold text-gray-900 md:text-[48px]"
                                 >
-                                    Search Recipes
+                                    {t('searchRecipes')}
                                 </Heading>
                                 <form onSubmit={handleSearch} className="flex items-center gap-2">
                                     <input
@@ -115,13 +125,13 @@ export default function SearchPage() {
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2"
-                                        placeholder="Search recipes..."
+                                        placeholder={t('searchPlaceholder')}
                                     />
                                     <Button
                                         type="submit"
                                         className="!w-24 !h-10 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                     >
-                                        Search
+                                        {t('search')}
                                     </Button>
                                 </form>
                             </div>
@@ -159,7 +169,7 @@ export default function SearchPage() {
                             <div className="flex flex-1 flex-col items-start gap-[66px] md:ml-0 md:self-stretch sm:gap-[33px]">
                                 <div className="grid grid-cols-3 gap-3.5 self-stretch md:grid-cols-2 sm:grid-cols-1">
                                     {isLoading ? (
-                                        <div>Loading...</div>
+                                        <div>{t('loading')}</div>
                                     ) : (
                                         searchResults.length > 0 ? (
                                             // display 12 recipes per page
@@ -172,7 +182,7 @@ export default function SearchPage() {
                                                 />
                                             ))
                                         ) : (
-                                            <div>No recipes found</div>
+                                            <div>{t('noRecipesFound')}</div>
                                         )
                                     )}
                                 </div>
@@ -186,7 +196,7 @@ export default function SearchPage() {
                                             disabled={currentPage === 0}
                                             style={{ backgroundColor: currentPage === 0 ? '#f3f4f6' : '' }}
                                         >
-                                            Previous Page
+                                            {t('previous')}
                                         </Button>
                                         <Button
                                             shape="round"
@@ -195,7 +205,7 @@ export default function SearchPage() {
                                             disabled={searchResults.length < 12}
                                             style={{ backgroundColor: searchResults.length < 12 ? '#f3f4f6' : '' }}
                                         >
-                                            Next Page
+                                            {t('next')}
                                         </Button>
                                     </div>
                                 )}
