@@ -3,6 +3,7 @@ import PopUp from "reactjs-popup";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
     const [signedUp, setSignedUp] = useState<boolean>(false);  // Show message after sign-up
     const [, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // if user is already logged in, but using email/password, and their email is not verified, don't switch to profile
     useEffect(() => {
@@ -74,7 +76,7 @@ const Login: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-top h-screen">
             {/* Heading */}
-            <h1 className="text-3xl font-bold mb-4">Login or Sign Up</h1>
+            <h1 className="text-3xl font-bold mb-4">{t('login')}</h1>
             
             {/* Google sign in button */}
             <button
@@ -112,7 +114,7 @@ const Login: React.FC = () => {
                                 <path fill="none" d="M0 0h48v48H0z"></path>
                             </svg>
                         </div>
-                        <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Google</span>
+                        <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>{t('google')}</span>
                     </div>
                 </div>
             </button>
@@ -134,20 +136,20 @@ const Login: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>Sign in with Twitter</span>
+                <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>{t('twitter')}</span>
             </button>
 
             {/* Display error message */}
-            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+            {error && <p className="text-red-500 text-sm mb-2">{t(error.includes("Sign-up") ? 'signedUpFail' : 'loggedInFail')}</p>}
 
             {/* Display message after sign-up */}
-            {signedUp && <p className="text-green-500 text-sm mb-2">Sign-up successful! Please check your email to verify your account.</p>}
+            {signedUp && <p className="text-green-500 text-sm mb-2">{t('signUpSuccess')}</p>}
 
             {/* Toggle between login and sign-up form */}
             <form className="flex flex-col items-center" onSubmit={isSignUpMode ? handleSignUp : handleLoginWithEmail}>
                 <input
                     type="email"
-                    placeholder="Email"
+                    placeholder={t('emailPlaceholder')}
                     className="mb-2 p-2 border border-gray-300 rounded"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -156,7 +158,7 @@ const Login: React.FC = () => {
                 <div className="relative w-full">
                     <input
                         type="password"
-                        placeholder="Password"
+                        placeholder={t('passwordPlaceholder')}
                         className="mb-2 p-2 border border-gray-300 rounded w-full"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -185,13 +187,13 @@ const Login: React.FC = () => {
                     )}
                 </div>
                 {/* forgot password link */}
-                <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">Forgot password?</Link>
+                <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">{t('forgotPW')}</Link>
                 <button
                     type="submit"
                     className={`font-poppins px-6 py-2 bg-green-500 text-white border rounded hover:bg-green-600 mb-2`}
                     style={{ color: "white" }}
                 >
-                    {isSignUpMode ? "Sign Up" : "Login"}
+                    {t(isSignUpMode ? 'signUpButton' : 'loginButton')}
                 </button>
             </form>
 
@@ -200,7 +202,7 @@ const Login: React.FC = () => {
                 onClick={() => setIsSignUpMode(!isSignUpMode)}
                 className="text-sm text-blue-500 hover:underline"
             >
-                {isSignUpMode ? "Already have an account? Log in" : "Don't have an account? Sign up"}
+                {t(isSignUpMode ? 'alreadyAccount' : 'noAccount')}
             </button>
         </div>
     );

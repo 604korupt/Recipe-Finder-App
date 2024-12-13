@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Heading, Img } from "./..";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
+import { useTranslation } from 'react-i18next'; // Add this import
 
 interface Recipe {
   _id: string;
@@ -19,10 +20,10 @@ interface Props {
 }
 
 export default function RecipeList({
-    titleText = "All Recipes",
     searchButtonText = "Search",
     ...props
 }: Props) {
+    const { t } = useTranslation(); // Initialize translation
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [visibleRecipes, setVisibleRecipes] = useState<Recipe[]>([]);
     const [currentCount, setCurrentCount] = useState(0);
@@ -113,7 +114,7 @@ export default function RecipeList({
         <div {...props} className={`${props.className} flex flex-col items-center gap-10 flex-1 container-xs`}>
             <div className="mx-2 flex items-center justify-between gap-5 self-stretch md:mx-0">
                 <Heading size="headinglg" as="h1" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
-                    {titleText}
+                    {t('allRecipes')} {/* Use translation for All Recipes */}
                 </Heading>
             </div>
 
@@ -140,23 +141,23 @@ export default function RecipeList({
                                                     className="font-poppins mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
                                                     style={{ color: 'white' }}
                                                 >
-                                                    View Recipe Details
+                                                    {t('viewRecipe')}
                                                 </Link>
                                                 {showConfirmation && deletingRecipeId === recipe.id ? (
                                                     <div className="text-[17px] font-bold mt-2 text-center">
-                                                        <p>Are you sure you want to delete this recipe?</p>
+                                                        <p>{t('deleteConfirm')}</p>
                                                         <div className="flex gap-2 mt-2 justify-center">
                                                         <Button
                                                             className="!h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                                             onClick={handleDeleteRecipe}
                                                         >
-                                                            Yes, Delete
+                                                            {t('yesDelete')}
                                                         </Button>
                                                         <Button
                                                             className="!h-10 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                                                             onClick={cancelDelete}
                                                         >
-                                                            Cancel
+                                                            {t('cancel')}
                                                         </Button>
                                                         </div>
                                                     </div>
@@ -166,7 +167,7 @@ export default function RecipeList({
                                                         className="mt-2 !h-10 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                                         onClick={() => confirmDelete(recipe.id)}
                                                     >
-                                                        Delete Recipe
+                                                        {t('delete')}
                                                     </Button>
                                                 )}
                                             </div>
@@ -186,7 +187,7 @@ export default function RecipeList({
                                 disabled={currentCount === 0}
                                 style={{ backgroundColor: currentCount === 0 ? '#f3f4f6' : '' }}
                             >
-                                Previous Page
+                                {t('previous')}
                             </Button>
                             <Button
                                 shape="round"
@@ -195,7 +196,7 @@ export default function RecipeList({
                                 disabled={currentCount + 4 >= recipes.length}
                                 style={{ backgroundColor: currentCount + 4 >= recipes.length ? '#f3f4f6' : '' }}
                             >
-                                Next Page
+                                {t('next')}
                             </Button>
                         </div>
                     )}

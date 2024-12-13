@@ -1,7 +1,14 @@
 import { Heading } from "../../components";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const RecipeFinderSection: React.FC = () => {
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
+
     return (
         <>
             <div className="fixed top-0 left-0 right-0 w-full bg-light_green-a700 z-50">
@@ -36,11 +43,11 @@ const RecipeFinderSection: React.FC = () => {
                                 className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300"
                                 style={{ color: "#f4f4f4" }}
                             >
-                                Random Recipe
+                                {t('randomRecipe')}
                             </Link>
                             <Link
                                 to="/login"
-                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-100 text-gray-900_01"
+                                className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
                             >
                                 <img 
                                     src="/images/img_user.svg"
@@ -48,6 +55,17 @@ const RecipeFinderSection: React.FC = () => {
                                     className="w-5 h-5"
                                 />
                             </Link>
+                            <select 
+                                onChange={(e) => {
+                                    changeLanguage(e.target.value);
+                                    localStorage.setItem('language', e.target.value);
+                                }} 
+                                value={i18n.language}
+                                className="font-poppins px-4 py-2 bg-gray-200 rounded-md w-32"
+                            >
+                                <option value="en">English</option>
+                                <option value="zh-TW">繁體中文</option>
+                            </select>
                         </div>
                     </div>
                 </div>
