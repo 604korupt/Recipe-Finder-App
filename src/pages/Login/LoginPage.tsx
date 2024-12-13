@@ -14,7 +14,14 @@ const Login: React.FC = () => {
     const [signedUp, setSignedUp] = useState<boolean>(false);  // Show message after sign-up
     const [, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, []);
 
     // if user is already logged in, but using email/password, and their email is not verified, don't switch to profile
     useEffect(() => {

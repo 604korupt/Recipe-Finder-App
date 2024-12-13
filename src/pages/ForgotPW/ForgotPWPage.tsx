@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getAuth, sendPasswordResetEmail  } from "firebase/auth";
 import { useTranslation } from 'react-i18next';
 
@@ -6,7 +6,14 @@ import { useTranslation } from 'react-i18next';
 const ForgotPWPage: React.FC = () => {
     const [email, setEmail] = React.useState("");
     const [, setError] = React.useState("");
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
 
     const handleResetPassword = async () => {
         try {
