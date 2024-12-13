@@ -81,6 +81,16 @@
   "changePassword": "更改密碼",
   "changePWForm": "更改密碼：",
   "logout": "登出",
-  "deleteAccount": "刪除帳戶"
+  "deleteAccount": "刪除帳戶",
+
+  "recipeDetail": "食譜詳情",
+  "notSignedIn": "您尚未登入。請登入以查看此頁面。",
+  "verifyEmail": "驗證電子郵件以保存食譜。",
+  "saveRecipe": "食譜保存成功！",
+  "saveRecipeDuplicate": "食譜已經保存！",
+  "saveRecipeButton": "保存食譜",
+  "savingLoading": "保存中...",
+  "ingredients": "食材",
+  "instructions": "步驟"
 
 }

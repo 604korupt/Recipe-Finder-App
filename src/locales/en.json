@@ -81,6 +81,16 @@
     "changePassword": "Change Password",
     "changePWForm": "Change Password:",
     "logout": "Logout",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+
+    "recipeDetail": "Recipe Detail",
+    "notSignedIn": "Please sign in to save recipes.",
+    "verifyEmail": "Please verify your email before saving recipes.",
+    "saveRecipe": "Recipe saved successfully!",
+    "saveRecipeDuplicate": "Recipe already saved!",
+    "saveRecipeButton": "Save Recipe",
+    "savingLoading": "Saving...",
+    "ingredients": "Ingredients",
+    "instructions": "Instructions"
     
 }
