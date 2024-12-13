@@ -2,9 +2,11 @@ import { Heading } from "../../components";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 const RecipeFinderSection: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -12,6 +14,18 @@ const RecipeFinderSection: React.FC = () => {
         });
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+        localStorage.setItem('language', lng);
+    };
 
     return (
         <>
@@ -32,6 +46,7 @@ const RecipeFinderSection: React.FC = () => {
                         </Heading>
 
                         <div className="flex gap-4">
+                            
                             <Link 
                                 to="/search"
                                 className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300 text-gray-900_01"
@@ -47,7 +62,7 @@ const RecipeFinderSection: React.FC = () => {
                                 className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300"
                                 style={{ color: "#f4f4f4" }}
                             >
-                                Random Recipe
+                                {t('randomRecipe')}
                             </Link>
                             {/* when user is logged in, show profile page, otherwise show login page */}
                             {isLoggedIn ? (
@@ -73,6 +88,16 @@ const RecipeFinderSection: React.FC = () => {
                                     />
                                 </Link>
                             )}
+                            <select 
+                                onChange={(e) => {
+                                    changeLanguage(e.target.value);
+                                }} 
+                                value={i18n.language}
+                                className="font-poppins px-4 py-2 bg-gray-200 rounded-md w-32"
+                            >
+                                <option value="en">English</option>
+                                <option value="zh-TW">繁體中文</option>
+                            </select>
                         </div>
                     </div>
                 </div>

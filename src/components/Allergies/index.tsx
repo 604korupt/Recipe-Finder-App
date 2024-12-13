@@ -1,5 +1,6 @@
 import { Text, CheckBox, Heading } from "./.."; // Ensure CheckBox is imported
 import React from "react";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 interface Props {
     className?: string;
@@ -8,7 +9,8 @@ interface Props {
     onAllergiesChange?: (allergies: string[]) => void;
 }
 
-export default function Allergies({ allergiesText = "Allergies", seeMoreLink = "See more", onAllergiesChange, ...props }: Props) {
+export default function Allergies({ onAllergiesChange, ...props }: Props) {
+    const { t } = useTranslation(); // Initialize translation
     const [selectedAllergies, setSelectedAllergies] = React.useState<string[]>([]);
     const [showMore, setShowMore] = React.useState(false);
 
@@ -27,40 +29,40 @@ export default function Allergies({ allergiesText = "Allergies", seeMoreLink = "
         >
             <div className="flex flex-col items-start gap-5 self-stretch">
                 <Heading size="textmd" as="p" className="font-poppins text-[16px] font-medium text-gray-900">
-                    {allergiesText}
+                    {t('allergies')}
                 </Heading>
                 <div className="flex flex-col items-start gap-5 self-stretch">
                     <CheckBox
                         name="Dairy Option"
-                        label="Dairy"
+                        label={t('dairy')}
                         id="DairyOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                         onChange={(checked) => handleAllergyChange('dairy', checked)}
                     />
                     <CheckBox
                         name="Egg Option"
-                        label="Egg"
+                        label={t('egg')}
                         id="EggOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                         onChange={(checked) => handleAllergyChange('egg', checked)}
                     />
                     <CheckBox
                         name="Gluten Option"
-                        label="Gluten"
+                        label={t('gluten')}
                         id="GlutenOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                         onChange={(checked) => handleAllergyChange('gluten', checked)}
                     />
                     <CheckBox
                         name="Grain Option"
-                        label="Grain"
+                        label={t('grain')}
                         id="GrainOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                         onChange={(checked) => handleAllergyChange('grain', checked)}
                     />
                     <CheckBox
                         name="Peanut Option"
-                        label="Peanut"
+                        label={t('peanut')}
                         id="PeanutOption"
                         className="gap-3 text-[14px] text-blue_gray-800"
                         onChange={(checked) => handleAllergyChange('peanut', checked)}
@@ -70,49 +72,49 @@ export default function Allergies({ allergiesText = "Allergies", seeMoreLink = "
                         <>  
                             <CheckBox
                                 name="Seafood Option"
-                                label="Seafood"
+                                label={t('seafood')}
                                 id="SeafoodOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('seafood', checked)}
                             />
                             <CheckBox
                                 name="Sesame Option"
-                                label="Sesame"
+                                label={t('sesame')}
                                 id="SesameOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('sesame', checked)}
                             />
                             <CheckBox
                                 name="Shellfish Option"
-                                label="Shellfish"
+                                label={t('shellfish')}
                                 id="ShellfishOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('shellfish', checked)}
                             />
                             <CheckBox
                                 name="Soy Option"
-                                label="Soy"
+                                label={t('soy')}
                                 id="SoyOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('soy', checked)}
                             />
                             <CheckBox
                                 name="Sulfite Option"
-                                label="Sulfite"
+                                label={t('sulfite')}
                                 id="SulfiteOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('sulfite', checked)}
                             />
                             <CheckBox
                                 name="Tree Nut Option"
-                                label="Tree Nut"
+                                label={t('treeNut')}
                                 id="TreeNutOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('tree nut', checked)}
                             />
                             <CheckBox
                                 name="Wheat Option"
-                                label="Wheat"
+                                label={t('wheat')}
                                 id="WheatOption"
                                 className="gap-3 text-[14px] text-blue_gray-800"
                                 onChange={(checked) => handleAllergyChange('wheat', checked)}
@@ -124,7 +126,7 @@ export default function Allergies({ allergiesText = "Allergies", seeMoreLink = "
                         setShowMore(!showMore);
                     }}>
                         <Text as="p" className="text-[12px] font-normal text-light_green-800">
-                            {showMore ? "See less" : seeMoreLink}
+                            {showMore ? t('seeLess') : t('seeMore')}
                         </Text>
                     </a>
                 </div>

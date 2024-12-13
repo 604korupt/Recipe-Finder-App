@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebaseConfig';
 import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail, deleteUser} from 'firebase/auth';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+    const { t } = useTranslation();
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newName, setNewName] = useState('');
@@ -154,14 +156,14 @@ const Profile = () => {
 
     return (
         <div className="flex flex-col items-center gap-5">
-            <h1 className="text-4xl font-bold">Profile</h1>
+            <h1 className="text-4xl font-bold">{t('profile')}</h1>
             {user ? (
                 <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg">Name: {user.displayName || "No display name set"}</p>
-                    <p className="text-lg">Email: {user.email || "Using Twitter"}</p>
+                    <p className="text-lg">{t('name')}: {user.displayName || t('noDisplayName')}</p>
+                    <p className="text-lg">{t('email')}: {user.email || t('usingTwitter')}</p>
                 </div>
             ) : (
-                <p>User not authenticated</p>
+                <p>{t('notAuthenticated')}</p>
             )}
 
             {user?.providerData[0]?.providerId === 'password' && (
@@ -170,7 +172,7 @@ const Profile = () => {
 
                     {/* Set new display name */}
                     <form className="flex flex-col gap-2" onSubmit={handleChangeDisplayName}>
-                        <label htmlFor="displayName" className="text-lg">Change Display Name:</label>
+                        <label htmlFor="displayName" className="text-lg">{t('changeDisplayName')}:</label>
                         <input
                             type="displayName"
                             id="displayName"
@@ -178,14 +180,14 @@ const Profile = () => {
                             onChange={(e) => setNewName(e.target.value)}
                             className="px-4 py-2 border border-gray-300 rounded-md"
                         />
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">Change Display Name</button>
+                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">{t('changeDisplayName')}</button>
                     </form>
 
                     {errorEmail && <p className="text-red-500">{errorEmail}</p>}
                     {successEmail && <p className="text-green-500">{successEmail}</p>}
 
                     <form className="flex flex-col gap-2" onSubmit={handleChangeEmail}>
-                        <label htmlFor="email" className="text-lg">Change Email:</label>
+                        <label htmlFor="email" className="text-lg">{t('changeEmailForm')}</label>
                         <input
                             type="email"
                             id="email"
@@ -199,7 +201,7 @@ const Profile = () => {
                             disabled={!newEmail}
                             style = {{backgroundColor: !newEmail ? "#f3f4f6" : ""}}
                         >
-                            Change Email
+                            {t('changeEmail')}
                         </button>
                     </form>
 
@@ -207,7 +209,7 @@ const Profile = () => {
                     {successPassword && <p className="text-green-500">{successPassword}</p>}
 
                     <form className="flex flex-col gap-2" onSubmit={handleChangePassword}>
-                        <label htmlFor="password" className="text-lg">Change Password:</label>
+                        <label htmlFor="password" className="text-lg">{t('changePWForm')}</label>
                         <input
                             type="password"
                             id="password"
@@ -219,13 +221,13 @@ const Profile = () => {
                         />
                         {showPasswordRequirements && (
                             <div className="mt-1 p-2 bg-white">
-                                <p className="text-sm">Password must contain:</p>
+                                <p className="text-sm">{t('pwcontain')}</p>
                                 <ul className="text-sm list-disc list-inside">
-                                    <li className={newPassword.length >= 6 ? "text-green-500" : "text-red-500"}>At least 6 characters</li>
-                                    <li className={/[A-Z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
-                                    <li className={/[a-z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
-                                    <li className={/[0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>At least one number</li>
-                                    <li className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>At least one special character</li>
+                                    <li className={newPassword.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
+                                    <li className={/[A-Z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
+                                    <li className={/[a-z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwlower')}</li>
+                                    <li className={/[0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwnumber')}</li>
+                                    <li className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwspecial')}</li>
                                 </ul>
                             </div>
                         )}
@@ -235,28 +237,32 @@ const Profile = () => {
                             disabled={!newPassword}
                             style = {{backgroundColor: !newPassword ? "#f3f4f6" : ""}}
                         >
-                            Change Password
+                            {t('changePassword')}
                         </button>
                     </form>
                 </>
             )}
 
-            {user ? (<button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            >
-                Logout
-            </button>) : (
+            {user ? (
+                <>
+                <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                >
+                    {t('logout')}
+                </button>
+                <button
+                    onClick={handleDeleteAccount}
+                    className="text-sm text-blue-500 hover:underline"
+                >
+                    {t('deleteAccount')}
+                </button>
+                </>
+            ) : (
                 <p></p>
             )}
 
-            {/* delete account button */}
-            <button
-                onClick={handleDeleteAccount}
-                className="text-sm text-blue-500 hover:underline"
-            >
-                Delete Account
-            </button>
+            
             
         </div>
     );

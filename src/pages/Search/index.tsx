@@ -119,22 +119,22 @@ export default function SearchPage() {
                                 >
                                     {t('searchRecipes')}
                                 </Heading>
-                                <form onSubmit={handleSearch} className="flex items-center gap-2">
-                                    <input
-                                        type="text"
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="w-full rounded-lg border border-gray-300 px-4 py-2"
-                                        placeholder={t('searchPlaceholder')}
-                                    />
-                                    <Button
-                                        type="submit"
-                                        className="!w-24 !h-10 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
-                                    >
-                                        {t('search')}
-                                    </Button>
-                                </form>
                             </div>
+                            <form onSubmit={handleSearch} className="flex items-center gap-2 w-[60%]">
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2"
+                                    placeholder={t('searchPlaceholder')}
+                                />
+                                <Button
+                                    type="submit"
+                                    className="!w-24 !h-10 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
+                                >
+                                    {t('search')}
+                                </Button>
+                            </form>
                         </div>
 
                         {/* Filters and Search Results */}
@@ -147,7 +147,7 @@ export default function SearchPage() {
                                             as="h3"
                                             className="mt-2.5 font-poppins text-[22px] font-semibold text-gray-900"
                                         >
-                                            Filters
+                                            {t('filters')}
                                         </Heading>
                                     </div>
                                     <div className="mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">

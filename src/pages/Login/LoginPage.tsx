@@ -181,13 +181,13 @@ const Login: React.FC = () => {
                             on="focus"
                         >
                             <div className="mt-1 p-2 bg-white border border-gray-300 rounded">
-                                <p className="text-sm">Password must contain:</p>
+                                <p className="text-sm">{t('pwcontain')}</p>
                                 <ul className="text-sm list-disc list-inside">
-                                    <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>At least 6 characters</li>
-                                    <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
-                                    <li className={/[a-z]/.test(password) ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
-                                    <li className={/[0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one number</li>
-                                    <li className={/[^A-Za-z0-9]/.test(password) ? "text-green-500" : "text-red-500"}>At least one special character</li>
+                                    <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
+                                    <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
+                                    <li className={/[a-z]/.test(password) ? "text-green-500" : "text-red-500"}>{t('pwlower')}</li>
+                                    <li className={/[0-9]/.test(password) ? "text-green-500" : "text-red-500"}>{t('pwnumber')}</li>
+                                    <li className={/[^A-Za-z0-9]/.test(password) ? "text-green-500" : "text-red-500"}>{t('pwspecial')}</li>
                                 </ul>
                             </div>
                         </PopUp>
