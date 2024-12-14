@@ -5,11 +5,18 @@ import { auth } from "../../firebaseConfig"; // Import Firebase auth
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 export default function RecipeDetailSection() {
-    const { t } = useTranslation(); // Initialize translation hook
+    const { t, i18n } = useTranslation(); // Initialize translation hook
     const [recipe, setRecipe] = useState<any>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(null);
 
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, []);
+    
     useEffect(() => {
         const fetchRecipe = async () => {
             const recipeData = await spoonacularApi.getRandomRecipe();
