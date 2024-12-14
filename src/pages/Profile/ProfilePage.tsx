@@ -132,7 +132,7 @@ const Profile = () => {
                 throw new Error('User is not authenticated');
             }
             // before deleting, add a confirmation dialog
-            if (!window.confirm('Are you sure you want to delete your account?')) return;
+            if (!window.confirm(t('deleteAccountConfirm'))) return;
             // Delete the user's account from database first
             await fetch(`http://localhost:5000/api/users/${user.uid}`, {
                 method: 'DELETE',
