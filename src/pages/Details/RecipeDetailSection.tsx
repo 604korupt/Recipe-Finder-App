@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { spoonacularApi } from "../../components/services/spoonacularApi";
 import { Img, Heading } from "../../components";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
+import { useTranslation } from 'react-i18next';
 
 export default function RecipeDetailSection() {
     const { id } = useParams<{ id: string }>();
     const [recipe, setRecipe] = useState<any>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(null); 
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -31,7 +33,10 @@ export default function RecipeDetailSection() {
             const instructions = recipe.analyzedInstructions[0]?.steps.map((step: any) => step.step) || [];
             
             const user = auth.currentUser; // Get the current user from Firebase
-            if (!user) throw new Error('User is not authenticated.');
+            if (!user) {
+                setMessage(t('notSignedIn'));
+                return;
+            }
             // if the user is using email/password, and their email is not verified, don't allow saving
             if (user.providerData.some((userInfo) => userInfo.providerId === 'password') && !user.emailVerified) {
                 setMessage('Please verify your email before saving recipes.');
@@ -54,7 +59,7 @@ export default function RecipeDetailSection() {
             const userRecipes = await userRecipesResponse.json();
             // some didn't exist, so have to make sure it's an array
             if (Array.isArray(userRecipes) && userRecipes.some((userRecipe: any) => userRecipe.id === recipe.id)) {
-                setMessage('Recipe already saved!');
+                setMessage(t('saveRecipeDuplicate'));
                 return;
             }
 
@@ -71,7 +76,7 @@ export default function RecipeDetailSection() {
             const data = await response.json();
             
             if (response.ok) {
-                setMessage('Recipe saved successfully!');
+                setMessage(t('saveRecipe'));
             } else {
                 throw new Error(data.error || 'Failed to save recipe');
             }
@@ -89,10 +94,10 @@ export default function RecipeDetailSection() {
                 <div className="container-xs flex flex-col items-left gap-12 md:px-5">
                     <div className="flex items-center justify-between gap-5 self-stretch px-2">
                         <Heading size="headinglg" as="h2" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
-                            Recipe Detail
+                            {t('recipeDetail')}
                         </Heading>
                         {message && (
-                        <div className={`mt-4 text-center ${message.startsWith('Recipe saved') ? 'text-green-500' : 'text-red-500'}`}>
+                        <div className={`mt-4 text-center ${message.startsWith(t('saveRecipe')) ? 'text-green-500' : 'text-red-500'}`}>
                             {message}
                         </div>
                         )}
@@ -103,7 +108,7 @@ export default function RecipeDetailSection() {
                                 className="font-poppins px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
                                 style={{ color: 'white' }}
                             >
-                                {isSaving ? 'Saving...' : 'Save Recipe'}
+                                {isSaving ? t('savingLoading') : t('saveRecipeButton')}
                             </button>
                         </div>
                     </div>
@@ -114,7 +119,7 @@ export default function RecipeDetailSection() {
                             <div className="flex">
                                 {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
                                 <div className="ml-4">
-                                    <h3 className="text-lg font-semibold">Ingredients:</h3>
+                                    <h3 className="text-lg font-semibold">{t('ingredients')}:</h3>
                                     <ul className="list-disc pl-5">
                                         {recipe.extendedIngredients.map((ingredient: any) => (
                                             <li key={ingredient.id}>{ingredient.original}</li>
@@ -122,7 +127,7 @@ export default function RecipeDetailSection() {
                                     </ul>
                                 </div>
                             </div>
-                            <h3 className="text-lg font-semibold">Instructions:</h3>
+                            <h3 className="text-lg font-semibold">{t('instructions')}:</h3>
                             <ul className="list-decimal pl-5">
                                 {recipe.analyzedInstructions[0].steps.map((step: any) => (
                                     <li key={step.number}>{step.step}</li>
@@ -130,7 +135,7 @@ export default function RecipeDetailSection() {
                             </ul>
                         </div>
                     ) : (
-                        <div className="text-center">Loading...</div>
+                        <div className="text-center">{t('loading')}</div>
                     )}
                 </div>
             </div>
