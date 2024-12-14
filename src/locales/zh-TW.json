@@ -91,6 +91,7 @@
   "saveRecipeButton": "保存食譜",
   "savingLoading": "保存中...",
   "ingredients": "食材",
-  "instructions": "步驟"
+  "instructions": "步驟",
+  "viewRecipeLogin": "請登入以查看此食譜！"
 
 }

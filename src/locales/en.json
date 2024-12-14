@@ -91,6 +91,7 @@
     "saveRecipeButton": "Save Recipe",
     "savingLoading": "Saving...",
     "ingredients": "Ingredients",
-    "instructions": "Instructions"
+    "instructions": "Instructions",
+    "viewRecipeLogin": "Please log in to view this recipe!"
     
 }
