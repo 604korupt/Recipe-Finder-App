@@ -137,12 +137,14 @@ export default function RecipeList({
                                                 <Heading as="h5" className="text-[20px] font-bold text-gray-900">
                                                     {recipe.title}
                                                 </Heading>
-                                                <Link to={`/saved-recipes/${recipe.id}`}
+                                                {showConfirmation && deletingRecipeId === recipe.id ? (
+                                                    <div></div> // Empty div to maintain layout
+                                                ) : (<Link to={`/saved-recipes/${recipe.id}`}
                                                     className="font-poppins mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
                                                     style={{ color: 'white' }}
                                                 >
                                                     {t('viewRecipe')}
-                                                </Link>
+                                                </Link>)}
                                                 {showConfirmation && deletingRecipeId === recipe.id ? (
                                                     <div className="text-[17px] font-bold mt-2 text-center">
                                                         <p>{t('deleteConfirm')}</p>
