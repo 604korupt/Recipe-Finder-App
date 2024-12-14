@@ -10,7 +10,14 @@ export default function RecipeDetailSection() {
     const [recipe, setRecipe] = useState<any>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(null); 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchRecipe = async () => {
