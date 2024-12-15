@@ -19,10 +19,15 @@ interface Props {
     searchButtonText?: string;
 }
 
+interface RecipeListProps {
+    isDarkMode: boolean;
+}
+
 export default function RecipeList({
+    isDarkMode,
     searchButtonText = "Search",
     ...props
-}: Props) {
+}: RecipeListProps & Props) {
     const { t } = useTranslation(); // Initialize translation
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [visibleRecipes, setVisibleRecipes] = useState<Recipe[]>([]);
@@ -113,8 +118,8 @@ export default function RecipeList({
     return (
         <div {...props} className={`${props.className} flex flex-col items-center gap-10 flex-1 container-xs`}>
             <div className="mx-2 flex items-center justify-between gap-5 self-stretch md:mx-0">
-                <Heading size="headinglg" as="h1" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
-                    {t('allRecipes')} {/* Use translation for All Recipes */}
+                <Heading size="headinglg" as="h1" className={`text-[64px] font-bold text-gray-900 md:text-[48px] ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
+                    {t('allRecipes')}
                 </Heading>
             </div>
 
@@ -124,7 +129,7 @@ export default function RecipeList({
                 <>
                     <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">
                         {visibleRecipes.map((recipe, index) => (
-                            <div key={recipe._id} className="flex flex-col gap-2 rounded-[16px] bg-white-a700 p-2 shadow-xs border border-gray-300">
+                            <div key={recipe._id} className={`flex flex-col gap-2 rounded-[16px] ${isDarkMode ? 'bg-gray-900' : 'bg-white'} p-2 shadow-xs border ${isDarkMode ? 'border-gray-600' : 'border-gray-300'}`}>
                                 <Img
                                     src={recipe.image || `images/img_image_rounded_${index}.png`}
                                     alt={`${recipe.title} Image`}
@@ -134,7 +139,7 @@ export default function RecipeList({
                                     <div className="relative mt-[-2px] self-stretch">
                                         <div>
                                             <div className="flex flex-col items-center gap-1.5">
-                                                <Heading as="h5" className="text-[20px] font-bold text-gray-900">
+                                                <Heading as="h5" className={`text-[20px] font-bold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
                                                     {recipe.title}
                                                 </Heading>
                                                 {showConfirmation && deletingRecipeId === recipe.id ? (
@@ -187,7 +192,7 @@ export default function RecipeList({
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg mr-4"
                                 onClick={handlePreviousPage}
                                 disabled={currentCount === 0}
-                                style={{ backgroundColor: currentCount === 0 ? '#f3f4f6' : '' }}
+                                style={{ backgroundColor: currentCount === 0 ? '#d1d3d8' : '' }}
                             >
                                 {t('previous')}
                             </Button>
@@ -196,7 +201,7 @@ export default function RecipeList({
                                 className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg ml-4"
                                 onClick={handleNextPage}
                                 disabled={currentCount + 4 >= recipes.length}
-                                style={{ backgroundColor: currentCount + 4 >= recipes.length ? '#f3f4f6' : '' }}
+                                style={{ backgroundColor: currentCount + 4 >= recipes.length ? '#d1d3d8' : '' }}
                             >
                                 {t('next')}
                             </Button>
@@ -205,5 +210,5 @@ export default function RecipeList({
                 </>
             )}
         </div>
-        );
+    );
 }

@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet";
 import RecipeFinderSection from "./RecipeFinderSection";
-import RecipeGallerySection from "./RecipeGallerySection";
 
 export default function Home1Page() {
     return (
@@ -12,9 +11,6 @@ export default function Home1Page() {
             <div className="flex w-full flex-col gap-10 bg-white-a700">
                 {/* recipe finder section */}
                 <RecipeFinderSection />
-
-                {/* recipe gallery section */}
-                <RecipeGallerySection />
             </div>
         </>
     );

@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
+import RecipeGallerySection from "./RecipeGallerySection";
 
 const RecipeFinderSection: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
@@ -22,9 +24,22 @@ const RecipeFinderSection: React.FC = () => {
         }
     }, [i18n]);
 
+    useEffect(() => {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        setIsDarkMode(savedDarkMode);
+    }, []);
+
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
         localStorage.setItem('language', lng);
+    };
+
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => {
+            const newMode = !prev;
+            localStorage.setItem('darkMode', newMode.toString());
+            return newMode;
+        });
     };
 
     return (
@@ -100,11 +115,27 @@ const RecipeFinderSection: React.FC = () => {
                                 <option value="zh-CN">简体中文</option>
                                 <option value="ms">Melayu</option>
                             </select>
+                            <button onClick={toggleDarkMode} className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300">
+                                {isDarkMode ? (
+                                    <img
+                                        src="/images/img_sun.svg"
+                                        alt="light mode"
+                                        className="w-5 h-5"
+                                    ></img>
+                                ) : (
+                                    <img
+                                        src="/images/img_moon.svg"
+                                        alt="dark mode"
+                                        className="w-5 h-5"
+                                    ></img>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="h-[120px]"></div>
+            <div className="h-[67px]"></div>
+            <RecipeGallerySection isDarkMode={isDarkMode} />
         </>
     );
 };
