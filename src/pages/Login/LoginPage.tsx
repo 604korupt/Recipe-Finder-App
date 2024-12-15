@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, twitterProvider } from "../../firebaseConfig";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 import { useTranslation } from 'react-i18next';
+import RecipeFinderSection from "./RecipeFinderSection";
 
-const Login: React.FC = () => {
+const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -81,14 +82,14 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-top h-screen">
+        <div className={`flex flex-col items-center justify-top h-screen ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
             {/* Heading */}
-            <h1 className="text-3xl font-bold mb-4">{t('login')}</h1>
+            <h1 className={`text-3xl font-bold mb-4 ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('login')}</h1>
             
             {/* Google sign in button */}
             <button
                 onClick={() => handleLogin(googleProvider)}
-                className="gsi-material-button flex items-center justify-center px-6 py-2 bg-white text-black border border-black rounded hover:bg-gray-200 whitespace-nowrap"
+                className={`gsi-material-button flex items-center justify-center px-6 py-2 ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-black'} border border-black rounded hover:bg-gray-500 whitespace-nowrap`}
                 style={{ margin: "10px" }}
             >
                 {/* this is the icon for Google */}
@@ -128,7 +129,7 @@ const Login: React.FC = () => {
             {/* Twitter sign in button */}
             <button
                 onClick={() => handleLogin(twitterProvider)}
-                className="gsi-material-button flex items-center justify-center px-6 py-2 bg-white text-black border border-black rounded hover:bg-gray-200 whitespace-nowrap"
+                className={`gsi-material-button flex items-center justify-center px-6 py-2 ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-black'} border border-black rounded hover:bg-gray-500 whitespace-nowrap`}
                 style={{ margin: "10px" }}
             >
                 {/* this is the icon for Twitter */}
@@ -157,7 +158,7 @@ const Login: React.FC = () => {
                 <input
                     type="email"
                     placeholder={t('emailPlaceholder')}
-                    className="mb-2 p-2 border border-gray-300 rounded"
+                    className={`mb-2 p-2 border border-gray-300 rounded ${isDarkMode ? 'bg-gray-600 text-white' : 'bg-white text-black'}`}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -166,7 +167,7 @@ const Login: React.FC = () => {
                     <input
                         type="password"
                         placeholder={t('passwordPlaceholder')}
-                        className="mb-2 p-2 border border-gray-300 rounded w-full"
+                        className={`mb-2 p-2 border border-gray-300 rounded w-full ${isDarkMode ? 'bg-gray-600 text-white' : 'bg-white text-black'}`}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -215,4 +216,33 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+const LoginPage: React.FC = () => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        setIsDarkMode(savedDarkMode);
+    }, []);
+
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => {
+            const newMode = !prev;
+            localStorage.setItem('darkMode', newMode.toString());
+            return newMode;
+        });
+    };
+
+    return (
+        <>
+            <div className={`flex w-full flex-col gap-10 ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
+                <RecipeFinderSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <Login isDarkMode={isDarkMode} />
+            </div>
+            <button onClick={toggleDarkMode} className="absolute top-4 right-4">
+                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </button>
+        </>
+    );
+};
+
+export default LoginPage;
