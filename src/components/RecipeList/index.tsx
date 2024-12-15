@@ -124,7 +124,7 @@ export default function RecipeList({
             </div>
 
             {loading ? ( // Show loading state only while fetching
-                <div>{t('loading')}</div>
+                <div className={`${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('loading')}</div>
             ) : (
                 <>
                     <div className="grid grid-cols-4 gap-3.5 self-stretch md:grid-cols-1">

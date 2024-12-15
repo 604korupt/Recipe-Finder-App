@@ -18,6 +18,11 @@ const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
+            // when going to this page, scroll to the top of the page
+            window.scrollTo(0, 0);
+        }, []); // empty dependency array is used to run only once
+
+    useEffect(() => {
         const savedLanguage = localStorage.getItem('language');
         if (savedLanguage) {
             i18n.changeLanguage(savedLanguage);
@@ -182,7 +187,7 @@ const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
                             on="focus"
                         >
                             <div className="mt-1 p-2 bg-white border border-gray-300 rounded">
-                                <p className="text-sm">{t('pwcontain')}</p>
+                                <p className={`text-sm ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('pwcontain')}</p>
                                 <ul className="text-sm list-disc list-inside">
                                     <li className={password.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
                                     <li className={/[A-Z]/.test(password) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
@@ -217,12 +222,7 @@ const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
 };
 
 const LoginPage: React.FC = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    useEffect(() => {
-        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-        setIsDarkMode(savedDarkMode);
-    }, []);
+    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
 
     const toggleDarkMode = () => {
         setIsDarkMode(prev => {

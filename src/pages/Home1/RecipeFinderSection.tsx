@@ -7,7 +7,7 @@ import RecipeGallerySection from "./RecipeGallerySection";
 
 const RecipeFinderSection: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
@@ -23,11 +23,6 @@ const RecipeFinderSection: React.FC = () => {
             i18n.changeLanguage(savedLanguage);
         }
     }, [i18n]);
-
-    useEffect(() => {
-        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-        setIsDarkMode(savedDarkMode);
-    }, []);
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
