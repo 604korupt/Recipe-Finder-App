@@ -4,7 +4,11 @@ import { Img, Heading } from "../../components";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 
-export default function RecipeDetailSection() {
+interface RecipeDetailSectionProps {
+    isDarkMode: boolean;
+}
+
+export default function RecipeDetailSection({ isDarkMode }: RecipeDetailSectionProps) {
     const { t, i18n } = useTranslation(); // Initialize translation hook
     const [recipe, setRecipe] = useState<any>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -91,11 +95,11 @@ export default function RecipeDetailSection() {
     };
 
     return (
-        <>
+        <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
             <div className="mb-1 flex flex-col items-center">
                 <div className="container-xs flex flex-col items-left gap-12 md:px-5">
                     <div className="flex items-center justify-between gap-5 self-stretch px-2">
-                        <Heading size="headinglg" as="h2" className="text-[64px] font-bold text-gray-900 md:text-[48px]">
+                        <Heading size="headinglg" as="h2" className={`text-[64px] font-bold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'} md:text-[48px]`}>
                             {t('recipeDetail')}
                         </Heading>
                         {message && (
@@ -117,11 +121,11 @@ export default function RecipeDetailSection() {
                     
                     {recipe ? (
                         <div>
-                            <h2 className="text-xl font-semibold">{recipe.title}</h2>
+                            <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{recipe.title}</h2>
                             <br />         
                             <div className="flex">
                                 {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
-                                <div className="ml-4">
+                                <div className={`ml-4 ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
                                     <h3 className="text-lg font-semibold">{t('ingredients')}:</h3>
                                     <ul className="list-disc pl-5">
                                         {recipe.extendedIngredients.map((ingredient: any) => (
@@ -130,18 +134,18 @@ export default function RecipeDetailSection() {
                                     </ul>
                                 </div>
                             </div>
-                            <h3 className="text-lg font-semibold">{t('instructions')}:</h3>
-                            <ul className="list-decimal pl-5">
+                            <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('instructions')}:</h3>
+                            <ul className={`list-decimal pl-5 ${isDarkMode ? 'text-white-a700' : 'text-gray-900'} mb-5`}>
                                 {recipe.analyzedInstructions[0].steps.map((step: any) => (
                                     <li key={step.number}>{step.step}</li>
                                 ))}
                             </ul>
                         </div>
                     ) : (
-                        <div className="text-center">{t('loading')}</div>
+                        <div className={`text-center ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('loading')}</div>
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
