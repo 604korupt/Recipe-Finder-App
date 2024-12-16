@@ -65,9 +65,6 @@ const ForgotPWPage: React.FC = () => {
                             {t('resetPW')}
                         </button>
                     </form>
-                    <button onClick={toggleDarkMode} className="absolute top-4 right-4">
-                        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                    </button>
                 </div>
             </div>
         </>
