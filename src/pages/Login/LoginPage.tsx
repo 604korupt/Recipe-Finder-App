@@ -127,9 +127,10 @@ const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
                                 <path fill="none" d="M0 0h48v48H0z"></path>
                             </svg>
                         </div>
-                        <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>{t('google')}</span>
+
                     </div>
                 </div>
+                <span className="gsi-material-button-contents" style={{ marginLeft: "8px" }}>{t('google')}</span>
             </button>
             {/* Twitter sign in button */}
             <button
@@ -238,9 +239,6 @@ const LoginPage: React.FC = () => {
                 <RecipeFinderSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
                 <Login isDarkMode={isDarkMode} />
             </div>
-            <button onClick={toggleDarkMode} className="absolute top-4 right-4">
-                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            </button>
         </>
     );
 };
