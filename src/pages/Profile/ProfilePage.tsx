@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebaseConfig';
 import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail, deleteUser} from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
+import RecipeFinderSection from './RecipeFinderSection';
 
 const Profile = () => {
     const { t } = useTranslation();
@@ -18,6 +19,7 @@ const Profile = () => {
     const [successEmail, setSuccessEmail] = useState('');
     const [successPassword, setSuccessPassword] = useState('');
     const navigate = useNavigate();
+    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
 
 
     useEffect(() => {
@@ -39,6 +41,7 @@ const Profile = () => {
         try {
             await signOut(auth);
             navigate('/');
+            window.scrollTo(0, 0);
             console.log("Logout successful");
         } catch (error) {
             console.error("Error during logout:", error);
@@ -149,121 +152,131 @@ const Profile = () => {
         }
     };
 
-    // If loading, display a loading state
-    if (loading) {
-        return <div className="flex flex-col items-center gap-5">Loading...</div>;
-    }
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => {
+            const newMode = !prev;
+            localStorage.setItem('darkMode', newMode.toString());
+            return newMode;
+        });
+    };
 
     return (
-        <div className="flex flex-col items-center gap-5">
-            <h1 className="text-4xl font-bold">{t('profile')}</h1>
-            {user ? (
-                <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg">{t('name')}: {user.displayName || t('noDisplayName')}</p>
-                    <p className="text-lg">{t('email')}: {user.email || t('usingTwitter')}</p>
+        <div className={`flex w-full flex-col ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
+            <RecipeFinderSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            
+            {loading ? (
+                <div className={`flex flex-col gap-5 items-center justify-top h-screen ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>
+                    Loading...
                 </div>
             ) : (
-                <p>{t('notAuthenticated')}</p>
-            )}
+                <div className={`flex flex-col gap-5 items-center justify-top h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+                    <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('profile')}</h1>
+                    {user ? (
+                        <div className={`flex flex-col items-start gap-2 ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>
+                            <p className="text-lg">{t('name')}: {user.displayName || t('noDisplayName')}</p>
+                            <p className="text-lg">{t('email')}: {user.email || t('usingTwitter')}</p>
+                        </div>
+                    ) : (
+                        <p className={`${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('notAuthenticated')}</p>
+                    )}
 
-            {user?.providerData[0]?.providerId === 'password' && (
-                <>
-                    {error && <p className="text-red-500">{error}</p>}
+                    {user?.providerData[0]?.providerId === 'password' && (
+                        <>
+                            {error && <p className="text-red-500">{error}</p>}
 
-                    {/* Set new display name */}
-                    <form className="flex flex-col gap-2" onSubmit={handleChangeDisplayName}>
-                        <label htmlFor="displayName" className="text-lg">{t('changeDisplayName')}:</label>
-                        <input
-                            type="displayName"
-                            id="displayName"
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-md"
-                        />
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">{t('changeDisplayName')}</button>
-                    </form>
+                            {/* Set new display name */}
+                            <form className="flex flex-col gap-2" onSubmit={handleChangeDisplayName}>
+                                <label htmlFor="displayName" className={`text-lg ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('changeDisplayName')}:</label>
+                                <input
+                                    type="displayName"
+                                    id="displayName"
+                                    value={newName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                    className={`px-4 py-2 border border-gray-300 rounded-md ${isDarkMode ? 'bg-gray-600 text-white-a700' : 'bg-white text-black'}`}
+                                />
+                                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">{t('changeDisplayName')}</button>
+                            </form>
 
-                    {errorEmail && <p className="text-red-500">{errorEmail}</p>}
-                    {successEmail && <p className="text-green-500">{successEmail}</p>}
+                            {errorEmail && <p className="text-red-500">{errorEmail}</p>}
+                            {successEmail && <p className="text-green-500">{successEmail}</p>}
 
-                    <form className="flex flex-col gap-2" onSubmit={handleChangeEmail}>
-                        <label htmlFor="email" className="text-lg">{t('changeEmailForm')}</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-md"
-                        />
-                        <button 
-                            type="submit" 
-                            className="px-4 py-2 bg-green-500 text-white rounded-md"
-                            disabled={!newEmail}
-                            style = {{backgroundColor: !newEmail ? "#f3f4f6" : ""}}
+                            <form className="flex flex-col gap-2" onSubmit={handleChangeEmail}>
+                                <label htmlFor="email" className={`text-lg ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('changeEmailForm')}</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={newEmail}
+                                    onChange={(e) => setNewEmail(e.target.value)}
+                                    className={`px-4 py-2 border border-gray-300 rounded-md ${isDarkMode ? 'bg-gray-600 text-white-a700' : 'bg-white text-black'}`}
+                                />
+                                <button 
+                                    type="submit" 
+                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    disabled={!newEmail}
+                                    style = {{backgroundColor: !newEmail ? "#f3f4f6" : ""}}
+                                >
+                                    {t('changeEmail')}
+                                </button>
+                            </form>
+
+                            {errorPassword && <p className="text-red-500">{errorPassword}</p>}
+                            {successPassword && <p className="text-green-500">{successPassword}</p>}
+
+                            <form className="flex flex-col gap-2" onSubmit={handleChangePassword}>
+                                <label htmlFor="password" className={`text-lg ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('changePWForm')}</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="px-4 py-2 border border-gray-300 rounded-md"
+                                    onFocus={() => setShowPasswordRequirements(true)}
+                                    onBlur={() => setShowPasswordRequirements(false)}
+                                />
+                                {showPasswordRequirements && (
+                                    <div className="mt-1 p-2 bg-white">
+                                        <p className="text-sm">{t('pwcontain')}</p>
+                                        <ul className="text-sm list-disc list-inside">
+                                            <li className={newPassword.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
+                                            <li className={/[A-Z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
+                                            <li className={/[a-z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwlower')}</li>
+                                            <li className={/[0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwnumber')}</li>
+                                            <li className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwspecial')}</li>
+                                        </ul>
+                                    </div>
+                                )}
+                                <button 
+                                    type="submit" 
+                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    disabled={!newPassword}
+                                    style = {{backgroundColor: !newPassword ? "#f3f4f6" : ""}}
+                                >
+                                    {t('changePassword')}
+                                </button>
+                            </form>
+                        </>
+                    )}
+        
+                    {user ? (
+                        <>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                         >
-                            {t('changeEmail')}
+                            {t('logout')}
                         </button>
-                    </form>
-
-                    {errorPassword && <p className="text-red-500">{errorPassword}</p>}
-                    {successPassword && <p className="text-green-500">{successPassword}</p>}
-
-                    <form className="flex flex-col gap-2" onSubmit={handleChangePassword}>
-                        <label htmlFor="password" className="text-lg">{t('changePWForm')}</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-md"
-                            onFocus={() => setShowPasswordRequirements(true)}
-                            onBlur={() => setShowPasswordRequirements(false)}
-                        />
-                        {showPasswordRequirements && (
-                            <div className="mt-1 p-2 bg-white">
-                                <p className="text-sm">{t('pwcontain')}</p>
-                                <ul className="text-sm list-disc list-inside">
-                                    <li className={newPassword.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
-                                    <li className={/[A-Z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
-                                    <li className={/[a-z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwlower')}</li>
-                                    <li className={/[0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwnumber')}</li>
-                                    <li className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwspecial')}</li>
-                                </ul>
-                            </div>
-                        )}
-                        <button 
-                            type="submit" 
-                            className="px-4 py-2 bg-green-500 text-white rounded-md"
-                            disabled={!newPassword}
-                            style = {{backgroundColor: !newPassword ? "#f3f4f6" : ""}}
+                        <button
+                            onClick={handleDeleteAccount}
+                            className="text-sm text-blue-500 hover:underline"
                         >
-                            {t('changePassword')}
+                            {t('deleteAccount')}
                         </button>
-                    </form>
-                </>
+                        </>
+                    ) : (
+                        <p></p>
+                    )}
+                </div>
             )}
-
-            {user ? (
-                <>
-                <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                >
-                    {t('logout')}
-                </button>
-                <button
-                    onClick={handleDeleteAccount}
-                    className="text-sm text-blue-500 hover:underline"
-                >
-                    {t('deleteAccount')}
-                </button>
-                </>
-            ) : (
-                <p></p>
-            )}
-
-            
-            
         </div>
     );
 };
