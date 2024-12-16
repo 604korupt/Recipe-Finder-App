@@ -165,12 +165,12 @@ const Profile = () => {
             <RecipeFinderSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             
             {loading ? (
-                <div className={`flex flex-col gap-5 items-center justify-top h-screen ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>
+                <div className={`flex flex-col gap-5 items-center justify-top h-screen ${isDarkMode ? 'text-white-a700' : 'text-black'} mt-10`}>
                     Loading...
                 </div>
             ) : (
-                <div className={`flex flex-col gap-5 items-center justify-top h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-                    <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>{t('profile')}</h1>
+                <div className={`flex flex-col gap-3 items-center justify-top h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
+                    <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white-a700' : 'text-black'} mt-10`}>{t('profile')}</h1>
                     {user ? (
                         <div className={`flex flex-col items-start gap-2 ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>
                             <p className="text-lg">{t('name')}: {user.displayName || t('noDisplayName')}</p>
