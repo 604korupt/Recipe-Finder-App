@@ -204,7 +204,7 @@ const Login: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
                 <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">{t('forgotPW')}</Link>
                 <button
                     type="submit"
-                    className={`font-poppins px-6 py-2 bg-green-500 text-white border rounded hover:bg-green-600 mb-2`}
+                    className={`font-poppins px-6 py-2 bg-green-500 text-white border rounded hover:bg-green-600 mb-3 mt-2`}
                     style={{ color: "white" }}
                 >
                     {t(isSignUpMode ? 'signUpButton' : 'loginButton')}
