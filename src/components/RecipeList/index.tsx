@@ -133,7 +133,7 @@ export default function RecipeList({
                                 <Img
                                     src={recipe.image || `images/img_image_rounded_${index}.png`}
                                     alt={`${recipe.title} Image`}
-                                    className="h-[200px] rounded-[16px] object-cover"
+                                    className={`h-[200px] rounded-[16px] object-cover ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}
                                 />
                                 <div className="mb-4 ml-3 mr-2.5 flex flex-col items-start md:mx-0">
                                     <div className="relative mt-[-2px] self-stretch">

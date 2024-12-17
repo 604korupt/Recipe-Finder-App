@@ -124,7 +124,7 @@ export default function RecipeDetailSection({ isDarkMode }: RecipeDetailSectionP
                             <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{recipe.title}</h2>
                             <br />         
                             <div className="flex">
-                                {recipe.image && <Img src={recipe.image} alt={recipe.title} className="rounded-lg mb-4" />}
+                                {recipe.image && <Img src={recipe.image} alt={recipe.title} className={`rounded-lg mb-4 ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}/>}
                                 <div className={`ml-4 ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
                                     <h3 className="text-lg font-semibold">{t('ingredients')}:</h3>
                                     <ul className="list-disc pl-5">
