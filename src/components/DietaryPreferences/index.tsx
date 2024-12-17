@@ -7,9 +7,10 @@ interface Props {
     dietText?: React.ReactNode;
     seeMoreLink?: React.ReactNode;
     onDietsChange?: (diets: string[]) => void;
+    isDarkMode: boolean;
 }
 
-export default function DietaryPreferences({ onDietsChange, ...props }: Props) {
+export default function DietaryPreferences({ onDietsChange, isDarkMode, ...props }: Props) {
     const [showMore, setShowMore] = React.useState(false);
     const [selectedDiets, setSelectedDiets] = React.useState<string[]>([]);
     const { t } = useTranslation();
@@ -25,10 +26,10 @@ export default function DietaryPreferences({ onDietsChange, ...props }: Props) {
     return (
         <div
             {...props}
-            className={`${props.className} flex flex-col items-center px-3 py-3.5 bg-white-a700 flex-1 rounded-md`}
+            className={`${props.className} flex flex-col items-center px-3 py-3.5 ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}
         >
             <div className="flex flex-col items-start gap-5 self-stretch">
-                <Heading size="textmd" as="p" className="font-poppins text-[16px] font-medium text-gray-900">
+                <Heading size="textmd" as="p" className={`font-poppins text-[16px] font-medium ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>
                     {t('diet')}
                 </Heading>
                 <div className="flex flex-col items-start gap-5 self-stretch">
@@ -36,35 +37,35 @@ export default function DietaryPreferences({ onDietsChange, ...props }: Props) {
                         name="Gluten Free Option"
                         label={t("gf")}
                         id="GlutenFreeOption"
-                        className="gap-3 text-[14px] text-blue_gray-800"
+                        className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                         onChange={(checked) => handleDietChange('gluten free', checked)}
                     />
                     <CheckBox
                         name="Ketogenic Option"
                         label={t("ketogenic")}
                         id="KetogenicOption"
-                        className="gap-3 text-[14px] text-blue_gray-800"
+                        className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                         onChange={(checked) => handleDietChange('ketogenic', checked)}
                     />
                     <CheckBox
                         name="Vegetarian Option"
                         label={t("vegetarian")}
                         id="VegetarianOption"
-                        className="gap-3 text-[14px] text-blue_gray-800"
+                        className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                         onChange={(checked) => handleDietChange('vegetarian', checked)}
                     />
                     <CheckBox
                         name="Vegan Option"
                         label={t("vegan")}
                         id="VeganOption"
-                        className="gap-3 text-[14px] text-blue_gray-800"
+                        className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                         onChange={(checked) => handleDietChange('vegan', checked)}
                     />
                     <CheckBox
                         name="Paleo Option"
-                        label={t("paelo")}
+                        label={t("paleo")}
                         id="PaleoOption"
-                        className="gap-3 text-[14px] text-blue_gray-800"
+                        className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                         onChange={(checked) => handleDietChange('paleo', checked)}
                     />
                     {showMore && (
@@ -73,14 +74,14 @@ export default function DietaryPreferences({ onDietsChange, ...props }: Props) {
                                 name="LowFODMAP Option"
                                 label={t("lowFodmap")}
                                 id="LowFODMAPOption"
-                                className="gap-3 text-[14px] text-blue_gray-800"
+                                className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                                 onChange={(checked) => handleDietChange('fodmap-friendly', checked)}
                             />
                             <CheckBox
                                 name="Whole30 Option"
                                 label={t("whole30")}
                                 id="Whole30Option"
-                                className="gap-3 text-[14px] text-blue_gray-800"
+                                className={`gap-3 text-[14px] ${isDarkMode ? 'text-white-a700' : 'text-blue_gray-800'}`}
                                 onChange={(checked) => handleDietChange('whole30', checked)}
                             />
                         </>

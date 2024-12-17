@@ -24,6 +24,7 @@ export default function SearchPage() {
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const { t, i18n } = useTranslation();
+    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
     
     useEffect(() => {
         // when going to this page, scroll to the top of the page
@@ -99,23 +100,31 @@ export default function SearchPage() {
         setCurrentPage(prev => prev + 1);
     }
 
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => {
+            const newMode = !prev;
+            localStorage.setItem('darkMode', newMode.toString());
+            return newMode;
+        });
+    };
+
     return (
         <>
             <Helmet>
                 <title>Search Recipe</title>
                 <meta name="description" content="Find your favorite recipes" />
             </Helmet>
-            <div className="w-full bg-white-a700">
+            <div className={`flex w-full flex-col gap-10 ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
                 <div className="mb-9 flex flex-col items-center gap-[42px]">
                     {/* Recipe Finder Section */}
-                    <RecipeFinderSection />
+                    <RecipeFinderSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
                     <div className="container-xs flex flex-col gap-[34px] md:px-5">
                         <div className="ml-3.5 mr-2 flex items-center justify-between gap-5 md:mx-0">
                             <div className="flex items-center gap-5 flex-1">
                                 <Heading
                                     size="headinglg"
                                     as="h2"
-                                    className="text-[64px] font-bold text-gray-900 md:text-[48px]"
+                                    className={`text-[64px] font-bold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'} md:text-[48px]`}
                                 >
                                     {t('searchRecipes')}
                                 </Heading>
@@ -125,7 +134,7 @@ export default function SearchPage() {
                                     type="text"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-2"
+                                    className={`w-full rounded-lg border px-4 py-2 ${isDarkMode ? 'bg-gray-900 text-white-a700 border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}
                                     placeholder={t('searchPlaceholder')}
                                 />
                                 <Button
@@ -141,27 +150,29 @@ export default function SearchPage() {
                         <div className="flex items-start gap-9 md:flex-col">
                             <div className="w-[22%] md:w-full">
                                 <div className="bg-white-a700">
-                                    <div className="flex rounded-md bg-white-a700 px-3.5 py-2">
+                                    <div className={`flexpx-3.5 py-2 ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
                                         <Heading
                                             size="headings"
                                             as="h3"
-                                            className="mt-2.5 font-poppins text-[22px] font-semibold text-gray-900"
+                                            className={`mt-2.5 font-poppins text-[22px] font-semibold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}
                                         >
                                             {t('filters')}
                                         </Heading>
                                     </div>
-                                    <div className="mr-5 flex flex-col md:mr-0 md:flex-row sm:flex-col">
+                                    <div className="flex flex-col md:mr-0 md:flex-row sm:flex-col">
                                         {/* Dietary Preferences */}
                                         <DietaryPreferences 
                                             onDietsChange={(diets) => {
                                                 setSelectedDiets(diets);
-                                            }} 
+                                            }}
+                                            isDarkMode={isDarkMode} 
                                         />
                                         {/* Allergies */}
                                         <Allergies
                                             onAllergiesChange={(allergies) => {
                                                 setSelectedAllergies(allergies);
                                             }}
+                                            isDarkMode={isDarkMode}
                                         />
                                     </div>
                                 </div>
@@ -169,7 +180,7 @@ export default function SearchPage() {
                             <div className="flex flex-1 flex-col items-start gap-[66px] md:ml-0 md:self-stretch sm:gap-[33px]">
                                 <div className="grid grid-cols-3 gap-3.5 self-stretch md:grid-cols-2 sm:grid-cols-1">
                                     {isLoading ? (
-                                        <div>{t('loading')}</div>
+                                        <div className={`text-center ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('loading')}</div>
                                     ) : (
                                         searchResults.length > 0 ? (
                                             // display 12 recipes per page
@@ -179,10 +190,11 @@ export default function SearchPage() {
                                                     id={recipe.id}
                                                     title={recipe.title}
                                                     image={recipe.image}
+                                                    isDarkMode={isDarkMode}
                                                 />
                                             ))
                                         ) : (
-                                            <div>{t('noRecipesFound')}</div>
+                                            <div className={`text-center ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('noRecipesFound')}</div>
                                         )
                                     )}
                                 </div>
@@ -194,7 +206,7 @@ export default function SearchPage() {
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handlePreviousPage}
                                             disabled={currentPage === 0}
-                                            style={{ backgroundColor: currentPage === 0 ? '#f3f4f6' : '' }}
+                                            style={{ backgroundColor: currentPage === 0 ? '#d1d3d8' : '' }}
                                         >
                                             {t('previous')}
                                         </Button>
@@ -203,7 +215,7 @@ export default function SearchPage() {
                                             className="!w-30 !h-12 !px-4 !py-2 bg-light_green-a700 text-white hover:bg-light_green-a700 rounded-lg"
                                             onClick={handleNextPage}
                                             disabled={searchResults.length < 12}
-                                            style={{ backgroundColor: searchResults.length < 12 ? '#f3f4f6' : '' }}
+                                            style={{ backgroundColor: searchResults.length < 12 ? '#d1d3d8' : '' }}
                                         >
                                             {t('next')}
                                         </Button>

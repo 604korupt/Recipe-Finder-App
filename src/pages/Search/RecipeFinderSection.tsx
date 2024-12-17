@@ -4,7 +4,12 @@ import { auth } from "../../firebaseConfig";
 import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
 
-const RecipeFinderSection: React.FC = () => {
+interface RecipeFinderSectionProps {
+    isDarkMode: boolean;
+    toggleDarkMode: () => void;
+}
+
+const RecipeFinderSection: React.FC<RecipeFinderSectionProps> = ({ isDarkMode, toggleDarkMode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { t, i18n } = useTranslation();
 
@@ -29,7 +34,7 @@ const RecipeFinderSection: React.FC = () => {
 
     return (
         <>
-            <div className="fixed top-0 left-0 right-0 w-full bg-light_green-a700 z-50">
+            <div className={`fixed top-0 left-0 right-0 w-full bg-light_green-a700 z-50`}>
                 <div className="flex justify-center py-[26px] sm:py-5">
                     <div className="container-xs mt-2 flex flex-row items-center justify-between px-3.5 md:px-5">
                         <Heading
@@ -100,6 +105,21 @@ const RecipeFinderSection: React.FC = () => {
                                 <option value="zh-CN">简体中文</option>
                                 <option value="ms">Melayu</option>
                             </select>
+                            <button onClick={toggleDarkMode} className="font-poppins px-4 py-2 bg-white rounded-md hover:bg-gray-300">
+                                {isDarkMode ? (
+                                    <img
+                                        src="/images/img_sun.svg"
+                                        alt="light mode"
+                                        className="w-5 h-5"
+                                    />
+                                ) : (
+                                    <img
+                                        src="/images/img_moon.svg"
+                                        alt="dark mode"
+                                        className="w-5 h-5"
+                                    />
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
