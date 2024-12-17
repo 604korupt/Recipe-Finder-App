@@ -53,7 +53,7 @@ export default function RecipeDetailSection({ isDarkMode }: RecipeDetailSectionP
                 <div className="container-xs flex flex-col items-left gap-12 md:px-5">
                     <div className="flex items-center justify-between gap-5 self-stretch px-2">
                         {isAuthenticated && (
-                        <Heading size="headinglg" as="h2" className={`text-[64px] font-bold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'} md:text-[48px]`}>
+                            <Heading size="headinglg" as="h2" className={`text-[64px] font-bold ${isDarkMode ? 'text-white-a700' : 'text-gray-900'} md:text-[48px]`}>
                                 {t('recipeDetail')}
                             </Heading>
                         )}
