@@ -58,9 +58,9 @@ const ForgotPWPage: React.FC = () => {
                         <br />
                         <button 
                             type="submit"
-                            className="px-4 py-2 bg-green-500 text-white rounded-md"
+                            className="font-poppins px-4 py-2 bg-green-500 text-white-a700 rounded-md"
                             disabled={!email}
-                            style={{ backgroundColor: !email ? "#f3f4f6" : "" }}
+                            style={{ backgroundColor: !email ? "#d1d3d8" : "" }}
                         >
                             {t('resetPW')}
                         </button>

@@ -4,6 +4,7 @@ import { auth } from '../../firebaseConfig';
 import { User, signOut, updatePassword, onAuthStateChanged, updateProfile, verifyBeforeUpdateEmail, deleteUser} from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
 import RecipeFinderSection from './RecipeFinderSection';
+import PopUp from "reactjs-popup";
 
 const Profile = () => {
     const { t } = useTranslation();
@@ -169,7 +170,7 @@ const Profile = () => {
                     Loading...
                 </div>
             ) : (
-                <div className={`flex flex-col gap-3 items-center justify-top h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
+                <div className={`flex flex-col gap-2.5 items-center justify-top h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white-a700'}`}>
                     <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white-a700' : 'text-black'} mt-10`}>{t('profile')}</h1>
                     {user ? (
                         <div className={`flex flex-col items-start gap-2 ${isDarkMode ? 'text-white-a700' : 'text-black'}`}>
@@ -194,7 +195,7 @@ const Profile = () => {
                                     onChange={(e) => setNewName(e.target.value)}
                                     className={`px-4 py-2 border border-gray-300 rounded-md ${isDarkMode ? 'bg-gray-600 text-white-a700' : 'bg-white text-black'}`}
                                 />
-                                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">{t('changeDisplayName')}</button>
+                                <button type="submit" className="font-poppins py-2 bg-green-500 text-white-a700 rounded-md">{t('changeDisplayName')}</button>
                             </form>
 
                             {errorEmail && <p className="text-red-500">{errorEmail}</p>}
@@ -211,9 +212,9 @@ const Profile = () => {
                                 />
                                 <button 
                                     type="submit" 
-                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    className="font-poppins px-4 py-2 bg-green-500 text-white-a700 rounded-md"
                                     disabled={!newEmail}
-                                    style = {{backgroundColor: !newEmail ? "#f3f4f6" : ""}}
+                                    style = {{backgroundColor: !newEmail ? "#d1d3d8" : ""}}
                                 >
                                     {t('changeEmail')}
                                 </button>
@@ -233,9 +234,14 @@ const Profile = () => {
                                     onFocus={() => setShowPasswordRequirements(true)}
                                     onBlur={() => setShowPasswordRequirements(false)}
                                 />
-                                {showPasswordRequirements && (
-                                    <div className="mt-1 p-2 bg-white">
-                                        <p className="text-sm">{t('pwcontain')}</p>
+                                <PopUp
+                                    trigger={<div />}
+                                    position="right center"
+                                    open={showPasswordRequirements}
+                                    on="focus"
+                                >
+                                    <div className="mt-1 p-2 bg-white border border-gray-300 rounded">
+                                        <p className={`text-sm ${isDarkMode ? 'text-white-a700' : 'text-gray-900'}`}>{t('pwcontain')}</p>
                                         <ul className="text-sm list-disc list-inside">
                                             <li className={newPassword.length >= 6 ? "text-green-500" : "text-red-500"}>{t('pwlength')}</li>
                                             <li className={/[A-Z]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwupper')}</li>
@@ -244,12 +250,12 @@ const Profile = () => {
                                             <li className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-500" : "text-red-500"}>{t('pwspecial')}</li>
                                         </ul>
                                     </div>
-                                )}
+                                </PopUp>
                                 <button 
                                     type="submit" 
-                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    className="font-poppins px-4 py-2 bg-green-500 text-white-a700 rounded-md"
                                     disabled={!newPassword}
-                                    style = {{backgroundColor: !newPassword ? "#f3f4f6" : ""}}
+                                    style = {{backgroundColor: !newPassword ? "#d1d3d8" : ""}}
                                 >
                                     {t('changePassword')}
                                 </button>
@@ -261,7 +267,8 @@ const Profile = () => {
                         <>
                         <button
                             onClick={handleLogout}
-                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                            className="font-poppins px-4 py-2 bg-green-500 text-white border rounded-md hover:bg-green-600"
+                            style={{ color: "white" }}
                         >
                             {t('logout')}
                         </button>
