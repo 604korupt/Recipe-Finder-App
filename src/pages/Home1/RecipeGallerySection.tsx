@@ -1,10 +1,15 @@
 import RecipeList from "../../components/RecipeList";
+import {useEffect} from "react";
 
 interface RecipeGallerySectionProps {
     isDarkMode: boolean;
 }
 
 export default function RecipeGallerySection({ isDarkMode }: RecipeGallerySectionProps) {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <> {
             <div className={`flex flex-col items-center ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} h-screen w-full overflow-hidden`}>
